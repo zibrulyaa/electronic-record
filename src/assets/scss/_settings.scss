@@ -12,7 +12,6 @@ html {
   height: 100%;
   font-family: $font-family;
   -webkit-text-size-adjust: 100%;
-  background-color: $black;
 }
 
 .page__body {
@@ -20,6 +19,8 @@ html {
   min-width: 320px;
   min-height: 100%;
   font-size: 16px;
+  background-color: $bg;
+  color: $black;
 }
 
 img {

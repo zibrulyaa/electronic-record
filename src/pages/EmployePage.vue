@@ -7,7 +7,7 @@ defineProps<Props>()
 
 <template>
     <AppLayout>
-        Terminal page
+        Employe page
     </AppLayout>
 </template>
 
