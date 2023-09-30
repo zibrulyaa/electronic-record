@@ -18,6 +18,6 @@ import AsideMenu from './AsideMenu.vue';
 @import '@/assets/scss/mixins';
 
 .content {
-    padding-top: 150px;
+    padding-top: 100px;
 }
 </style>

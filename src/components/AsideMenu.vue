@@ -14,6 +14,7 @@ import AdministratorIcon from '@/components/icons/AdministratorIcon.vue'
 const route = useRoute()
 const routeName = computed(() => route.name)
 
+
 </script>
 
 <template>
@@ -26,9 +27,11 @@ const routeName = computed(() => route.name)
         <nav class="menu">
             <ul class="list-reset menu__list">
                 <li class="menu__list-item">
-                    <RouterLink class="menu__list-link" :class="{ active: routeName === '/' ? true : false }"
+                    <RouterLink class="menu__list-link"
+                        :class="{ active: routeName === ('/' || '/category' || '/category/:rid/services') ? true : false }"
                         :to="ROUTER_PATHS.TERMNINAL">
-                        <TerminalIcon :is-active="routeName === '/' ? true : false" />
+                        <TerminalIcon
+                            :is-active="routeName === ('/' || '/category' || '/category/:rid/services') ? true : false" />
                         <span>Терминал</span>
                     </RouterLink>
                 </li>
