@@ -3,24 +3,16 @@ import AppLayout from '@/components/AppLayout.vue';
 import CategoryCard from '@/components/CategoryCard.vue';
 import SkeletonCard from '@/components/skeletons/SkeletonCard.vue'
 
-import axios from 'axios';
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 
 import type { Category } from '@/types/'
-import { ALL_CATEGORIES_URL } from '@/constants'
 import { useRouter } from 'vue-router';
+import { useCategories } from '@/utils/useCategories'
 
 
 
 // Get all categories
-const categories = ref<Category[]>();
-
-async function getCategories() {
-    const data = await axios.get(`${ALL_CATEGORIES_URL}`)
-    categories.value = data?.data
-}
-
-getCategories()
+const { categories } = useCategories()
 
 const selectedCateroty = ref<Category | null>(null)
 
@@ -28,6 +20,7 @@ const chooseCategory = (choosenCategory: Category) => {
     selectedCateroty.value = choosenCategory
 }
 const router = useRouter()
+
 function goBack() {
     router.go(-1)
 }
@@ -37,7 +30,14 @@ function goBack() {
 <template>
     <AppLayout>
         <div class="wrapper">
-            <div class="content" v-if="categories">
+            <div class="content" v-if="categories?.length === 0">
+                <header class="header">
+                    <button class="btn-reset back-btn" @click="goBack">Вернуться назад</button>
+                    <div class="title">Все категории</div>
+                </header>
+                <div class="empty">Категории не были найдены 🙁</div>
+            </div>
+            <div class="content" v-else-if="categories">
                 <header class="header">
                     <button class="btn-reset back-btn" @click="goBack">Вернуться назад</button>
                     <div class="title">Выберите категорию</div>

@@ -1,13 +1,18 @@
 <script setup lang='ts'>
 import AppLayout from '@/components/AppLayout.vue';
-interface Props {
-}
-defineProps<Props>()
+import SettingsHeader from '@/components/administrator/SettingsHeader.vue'
+
+import { useCategories } from '@/utils/useCategories'
+
+const { categories } = useCategories()
+
 </script>
 
 <template>
     <AppLayout>
-        Administrator page
+        <div class="wrapper">
+            <SettingsHeader :categories="categories ? categories : '[]'" />
+        </div>
     </AppLayout>
 </template>
 

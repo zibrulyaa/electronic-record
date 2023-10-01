@@ -2,7 +2,7 @@
 import type { Category } from '@/types/'
 import { ROUTER_PATHS } from '@/constants';
 interface Props {
-    categories: Category[],
+    categories: Category[] | null,
 }
 defineProps<Props>()
 
@@ -17,6 +17,7 @@ defineProps<Props>()
             </RouterLink>
         </li>
     </ul>
+
 </template>
 
 <style lang='scss' scoped>

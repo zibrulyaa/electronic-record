@@ -17,9 +17,6 @@
 @import '@/assets/scss/vars';
 @import '@/assets/scss/mixins';
 
-.wrapper{
-    display: grid;
-}
 .card-skeleton {
     padding: 32px 16px;
     border: 3px solid $disabled;
@@ -28,6 +25,7 @@
     min-width: 100%;
     transition: all .3s ease;
     text-align: left;
+    max-height: 145px;
 
 
     // .card__title

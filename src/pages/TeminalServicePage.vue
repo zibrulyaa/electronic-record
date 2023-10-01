@@ -3,34 +3,21 @@ import AppLayout from '@/components/AppLayout.vue';
 import ServiceCard from '@/components/ServiceCard.vue';
 import SkeletonCard from '@/components/skeletons/SkeletonCard.vue'
 
-import axios from 'axios';
 import { ref, computed } from 'vue'
 
-import type { Category, Service } from '@/types/'
-import { ALL_CATEGORIES_URL } from '@/constants'
+import type { Service } from '@/types/'
+
 import { useRoute, useRouter } from 'vue-router';
+import { useServices } from '@/utils/useServices';
+import { useCategory } from '@/utils/useCategory';
 
 
 const route = useRoute()
 const router = useRouter()
-const categoryId = computed(() => route.fullPath.split('/').splice(2, 1));
+const categoryId = computed(() => route.fullPath.split('/').splice(2, 1).toString());
 
-const category = ref<Category | null>(null);
-async function getCategory() {
-    const data = await axios.get(`${ALL_CATEGORIES_URL}/${categoryId.value}`)
-    category.value = data?.data
-}
-
-getCategory()
-// Get all services
-const services = ref<Service[] | null>();
-
-async function getServices() {
-    const data = await axios.get(`${ALL_CATEGORIES_URL}/${categoryId.value}/service`)
-    services.value = data?.data
-}
-getServices()
-// 
+const { category } = useCategory(categoryId.value)
+const { services } = useServices(categoryId.value)
 
 const selectedService = ref<Service | null>(null)
 
@@ -41,7 +28,6 @@ const chooseService = (choosenService: Service) => {
 function goBack() {
     router.go(-1)
 }
-
 </script>
 
 <template>
@@ -79,10 +65,5 @@ function goBack() {
     margin-top: auto;
     margin-left: auto;
     margin-right: auto;
-}
-
-.empty {
-    text-align: center;
-    font-size: 24px;
 }
 </style>
