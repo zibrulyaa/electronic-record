@@ -1,21 +1,20 @@
 <script setup lang='ts'>
-import { computed, } from 'vue';
+import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import axios from 'axios';
+
+import { CATEGORIES_URL } from '@/constants';
+import { useCategory } from '@/composables/useCategory'
 
 import AppLayout from '@/components/AppLayout.vue';
 import CategoryForm from '@/components/administrator/categories/CategoryForm.vue';
 
-import { useCategory } from '@/utils/useCategory'
-
-import { CATEGORIES_URL } from '@/constants';
-import axios from 'axios';
-
 const route = useRoute()
 const router = useRouter()
-const categoryId = computed(() => route.path.split('/').pop().toString())
+
+const categoryId = computed(() => route.path.split('/').pop())
 
 const { category } = useCategory(categoryId.value)
-
 
 const config = {
     headers: { 'content-type': 'application/json' },
@@ -39,12 +38,17 @@ async function deleteCategory() {
 <template>
     <AppLayout>
         <div class="wrapper">
-            <div class="content" v-if="category">
-                <CategoryForm title="Редактирование" :category-id="categoryId" :submit-callback="updateCategory"
-                    :additional-callback="deleteCategory" :current-name="category.name"
-                    :current-description="category.description" />
+            <div class="content"
+                 v-if="category">
+                <CategoryForm title="Редактирование"
+                              :category-id="categoryId"
+                              :submit-callback="updateCategory"
+                              :additional-callback="deleteCategory"
+                              :current-name="category.name"
+                              :current-description="category.description" />
             </div>
-            <div class="content" v-else>Загрузка...</div>
+            <div class="content"
+                 v-else>Загрузка...</div>
         </div>
     </AppLayout>
 </template>

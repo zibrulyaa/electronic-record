@@ -1,23 +1,35 @@
 <script setup lang='ts'>
+import { useRouter } from 'vue-router';
+
 import type { Category } from '@/types';
+
 import ArrowRightIcon from '@/components/icons/ArrowRightIcon.vue';
-interface Props {
+
+defineProps<{
     categories: Category[]
+}>()
+
+const router = useRouter()
+
+function goToCategory(id: string) {
+    router.push(`/administrator/editCategory/${id}`)
 }
-defineProps<Props>()
 
 </script>
 
 <template>
     <ul class="category__list list-reset">
-        <li class="category__card" v-for="category in categories" :key="category.id">
-            <RouterLink :to="`/administrator/editCategory/${category.id}`">
-                <header class="category__card-header">
-                    <h3 class="category__card-title">{{ category.name }}</h3>
-                    <ArrowRightIcon />
-                </header>
-                <p class="category__card-description">{{ category.description }}</p>
-            </RouterLink>
+        <li class="category__card"
+            v-for="category in categories"
+            :key="category.id"
+            @click.left="goToCategory(category.id)">
+            <!-- <RouterLink :to="`/administrator/editCategory/${category.id}`"> -->
+            <header class="category__card-header">
+                <h3 class="category__card-title">{{ category.name }}</h3>
+                <ArrowRightIcon />
+            </header>
+            <p class="category__card-description">{{ category.description }}</p>
+            <!-- </RouterLink> -->
         </li>
     </ul>
 </template>

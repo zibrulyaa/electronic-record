@@ -11,7 +11,7 @@ export const useCategories = () => {
 
     const getCategories = async () => {
         try {
-            const response = await axios.get(`${CATEGORIES_URL}`)
+            const response = await axios.get(CATEGORIES_URL)
             categories.value = response?.data
             categoriesCount.value = categories.value?.length.toString()
         }

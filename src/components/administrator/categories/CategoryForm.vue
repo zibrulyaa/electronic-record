@@ -1,8 +1,10 @@
 <script setup lang='ts'>
+import { ref } from 'vue';
+
 import SubmitButton from '@/components/form/SubmitButton.vue';
 import DeleteButton from '@/components/form/DeleteButton.vue';
 import DiscardButton from '@/components/form/DiscardButton.vue'
-import { ref } from 'vue';
+import UpdateButton from '@/components/form/UpdateButton.vue';
 
 defineEmits(['closeForm'])
 
@@ -15,7 +17,7 @@ const props = withDefaults(defineProps<{
 }>(), {
     currentName: "",
     currentDescription: "",
-    additionalCallback: () => { return null }
+    additionalCallback: () => { }
 })
 
 const name = ref<string>(props.currentName)
@@ -29,17 +31,25 @@ const description = ref<string>(props.currentDescription)
         <div class="form">
             <label class="label">
                 <span class="label-title">Название</span>
-                <input class="input-reset input" type="text" name="name" placeholder="Введите название" v-model="name" />
+                <input class="input-reset input"
+                       type="text"
+                       name="name"
+                       placeholder="Введите название"
+                       v-model="name" />
             </label>
             <label class="label">
                 <span class="label-title">Описание</span>
-                <input class="input-reset input" type="text" name="description" placeholder="Введите название"
-                    v-model="description" />
+                <input class="input-reset input"
+                       type="text"
+                       name="description"
+                       placeholder="Введите название"
+                       v-model="description" />
             </label>
             <div class="form__btns">
                 <SubmitButton @click.left="submitCallback(name, description)" />
-                <DeleteButton v-show="additionalCallback" @click.left="additionalCallback()" />
-                <DiscardButton text="Отменить" @click.left="$emit('closeForm')" />
+                <UpdateButton @click.left="submitCallback(name, description)" />
+                <DeleteButton @click.left="additionalCallback()" />
+                <DiscardButton @click.left="$emit('closeForm')" />
             </div>
         </div>
     </div>

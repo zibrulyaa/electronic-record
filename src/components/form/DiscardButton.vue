@@ -1,16 +1,11 @@
 <script setup lang='ts'>
 import DiscardIcon from '../icons/DiscardIcon.vue';
-
-interface Props {
-    text: string
-}
-defineProps<Props>()
 </script>
 
 <template>
     <button class="form-btn form-btn-discard btn-reset">
         <DiscardIcon />
-        {{ text }}
+        Отменить
     </button>
 </template>
 

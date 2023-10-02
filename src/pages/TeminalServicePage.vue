@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import AppLayout from '@/components/AppLayout.vue';
-import ServiceCard from '@/components/ServiceCard.vue';
+import ServiceCard from '@/components/terminal/ServiceCard.vue';
 import SkeletonCard from '@/components/skeletons/SkeletonCard.vue'
 
 import { ref, computed } from 'vue'
@@ -8,8 +8,8 @@ import { ref, computed } from 'vue'
 import type { Service } from '@/types/'
 
 import { useRoute, useRouter } from 'vue-router';
-import { useServices } from '@/utils/useServices';
-import { useCategory } from '@/utils/useCategory';
+import { useServices } from '@/composables/useServices';
+import { useCategory } from '@/composables/useCategory';
 
 
 const route = useRoute()

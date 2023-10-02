@@ -5,6 +5,6 @@ import SaveIcon from '@/components/icons/SaveIcon.vue';
 <template>
     <button class="btn-reset form-btn" type="submit" >
         <SaveIcon />
-        Сохранить изменения
+        Сохранить
     </button>
 </template>

@@ -1,13 +1,13 @@
 <script setup lang='ts'>
 import AppLayout from '@/components/AppLayout.vue';
-import CategoryCard from '@/components/CategoryCard.vue';
+import CategoryCard from '@/components/terminal/CategoryCard.vue';
 import SkeletonCard from '@/components/skeletons/SkeletonCard.vue'
 
 import { ref } from 'vue'
 
 import type { Category } from '@/types/'
 import { useRouter } from 'vue-router';
-import { useCategories } from '@/utils/useCategories'
+import { useCategories } from '@/composables/useCategories'
 
 
 

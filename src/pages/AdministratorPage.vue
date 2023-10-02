@@ -2,7 +2,7 @@
 import AppLayout from '@/components/AppLayout.vue';
 import SettingsHeader from '@/components/administrator/SettingsHeader.vue'
 
-import { useCategories } from '@/utils/useCategories'
+import { useCategories } from '@/composables/useCategories'
 
 const { categoriesCount } = useCategories()
 
