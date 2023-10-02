@@ -2,20 +2,23 @@ import { ref, onMounted } from "vue"
 import axios from "axios"
 
 import type { Category } from '@/types';
-import { ALL_CATEGORIES_URL } from '@/constants';
+import { CATEGORIES_URL } from '@/constants';
 
 
 export const useCategories = () => {
-    const categories = ref<Category[] | null>()
+    const categories = ref<Category[] | null>(null)
+    const categoriesCount = ref<string | null>()
 
     const getCategories = async () => {
         try {
-            const response = await axios.get(`${ALL_CATEGORIES_URL}`)
+            const response = await axios.get(`${CATEGORIES_URL}`)
             categories.value = response?.data
+            categoriesCount.value = categories.value?.length.toString()
         }
         catch (error) {
             console.log(error)
             categories.value = null
+            categoriesCount.value = null
         }
     }
 
@@ -23,6 +26,7 @@ export const useCategories = () => {
 
     return {
         categories,
+        categoriesCount,
         getCategories
     }
 }

@@ -2,7 +2,7 @@ import { ref, onMounted} from "vue"
 import axios from "axios"
 
 import type { Service } from '@/types';
-import { ALL_CATEGORIES_URL } from '@/constants';
+import { CATEGORIES_URL } from '@/constants';
 
 
 export const useServices = ( categoryId: string) => {
@@ -10,7 +10,7 @@ export const useServices = ( categoryId: string) => {
 
     const getServices = async () => {
         try {
-            const response = await axios.get(`${ALL_CATEGORIES_URL}${categoryId}/service`)
+            const response = await axios.get(`${CATEGORIES_URL}${categoryId}/service`)
             services.value = response?.data
         }
         catch (error) {

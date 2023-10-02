@@ -5,6 +5,8 @@ import TeminalServicePage from '@/pages/TeminalServicePage.vue'
 import WindowsPage from '@/pages/WindowsPage.vue'
 import EmployePage from '@/pages/EmployePage.vue'
 import AdministratorPage from '@/pages/AdministratorPage.vue'
+import EditCategoriesPage from '@/pages/EditCategoriesPage.vue'
+import EditCategoryPage from '@/pages/EditCategoryPage.vue'
 
 import { ROUTER_PATHS } from '@/constants'
 
@@ -41,6 +43,16 @@ const router = createRouter({
       name: ROUTER_PATHS.ADMINISTRATOR,
       component: AdministratorPage
     },
+    {
+      path: ROUTER_PATHS.EDIT_CATEGORIES,
+      name: ROUTER_PATHS.EDIT_CATEGORIES,
+      component: EditCategoriesPage
+    },
+    {
+      path: ROUTER_PATHS.EDIT_CATEGORY,
+      name: ROUTER_PATHS.EDIT_CATEGORY,
+      component: EditCategoryPage
+    }
   ]
 })
 

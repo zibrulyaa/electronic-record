@@ -2,15 +2,15 @@ import { ref, onMounted } from "vue"
 import axios from "axios"
 
 import type { Category } from '@/types';
-import { ALL_CATEGORIES_URL } from '@/constants';
+import { CATEGORIES_URL } from '@/constants';
 
 
-export const useCategory = (categoryId: string) => {
+export const useCategory = (categoryId: string | null) => {
     const category = ref<Category | null>(null);
 
     const getCategory = async () => {
         try {
-            const response = await axios.get(`${ALL_CATEGORIES_URL}/${categoryId}`)
+            const response = await axios.get(`${CATEGORIES_URL}/${categoryId}`)
             category.value = response?.data
         }
         catch (error) {

@@ -1,10 +1,10 @@
 <script setup lang='ts'>
 
 import ArrowRightIcon from '@/components/icons/ArrowRightIcon.vue'
-import type { Category } from '@/types';
+import { ROUTER_PATHS } from '@/constants';
 
 interface Props {
-    categories: Category[] | '[]',
+    categoriesCount: string,
 }
 defineProps<Props>()
 
@@ -12,12 +12,12 @@ defineProps<Props>()
 
 <template>
     <div class="settings">
-        <h2 class="title">Настройки</h2>
+        <h2 class="subtitle">Настройки</h2>
         <div class="settings__inner">
-            <RouterLink class="card-setting" :to="'/'">
+            <RouterLink class="card-setting" :to="ROUTER_PATHS.EDIT_CATEGORIES">
                 <h3 class="card-setting__title">Услуги</h3>
                 <div class="card-setting__inner">
-                    <div class="card-setting__count">{{ categories?.length }}</div>
+                    <div class="card-setting__count">{{ categoriesCount }}</div>
                     <ArrowRightIcon />
                 </div>
             </RouterLink>
@@ -55,12 +55,7 @@ defineProps<Props>()
     }
 }
 
-.title {
-    font-weight: 500;
-    text-align: left;
-    margin-bottom: 20px;
-    font-size: 32px;
-}
+
 
 .card-setting {
     padding: 32px;
@@ -69,11 +64,12 @@ defineProps<Props>()
     background-color: $white;
     border-radius: 10px;
     box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);
-
-    &:hover{
+    cursor: pointer;
+    &:hover {
         padding: 31px;
         border: 1px solid $disabled;
     }
+
     // .card-setting__title
 
     &__title {

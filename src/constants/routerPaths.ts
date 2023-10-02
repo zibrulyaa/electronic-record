@@ -4,5 +4,7 @@ export const ROUTER_PATHS = {
     SERVICES: '/category/:rid/services',
     WINDOWS: '/windows',
     EMPLOYE: '/employe',
-    ADMINISTRATOR: '/administrator'
+    ADMINISTRATOR: '/administrator',
+    EDIT_CATEGORIES: '/administrator/editCategories',
+    EDIT_CATEGORY: '/administrator/editCategory/:rid'
 }

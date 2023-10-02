@@ -4,14 +4,14 @@ import SettingsHeader from '@/components/administrator/SettingsHeader.vue'
 
 import { useCategories } from '@/utils/useCategories'
 
-const { categories } = useCategories()
+const { categoriesCount } = useCategories()
 
 </script>
 
 <template>
     <AppLayout>
-        <div class="wrapper">
-            <SettingsHeader :categories="categories ? categories : '[]'" />
+        <div class="wrapper" v-if="categoriesCount">
+            <SettingsHeader :categoriesCount="categoriesCount" />
         </div>
     </AppLayout>
 </template>

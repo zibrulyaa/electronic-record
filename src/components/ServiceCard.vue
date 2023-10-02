@@ -11,11 +11,10 @@ const emit = defineEmits(['chooseService'])
 
 const selectedServiceId = ref<string>()
 
-const handleOnChange = (event) => {
+const handleOnChange = (event: Event) => {
     emit('chooseService', event?.target?.value)
     selectedServiceId.value = event?.target?.value
 }
-console.log(selectedServiceId.value)
 
 </script>
 
