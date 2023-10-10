@@ -19,18 +19,23 @@ const handleOnChange = (event: Event) => {
 
 <template>
     <ul class="cards__inner list-reset">
-        <li v-for="service in services"
-            :key="service.id">
-            <label class="card"
-                   :class="{ active: selectedServiceId === service.id }">
-                <input class="visually-hidden"
-                       type="radio"
-                       @change="handleOnChange"
-                       :value="service.id"
-                       name="services">
+        <li
+            v-for="service in services"
+            :key="service.id"
+        >
+            <label
+                class="card"
+                :class="{ active: selectedServiceId === service.id }"
+            >
+                <input
+                    class="visually-hidden"
+                    type="radio"
+                    @change="handleOnChange"
+                    :value="service.id"
+                    name="services"
+                >
                 <h3 class="card__title">{{ service.name }}</h3>
                 <p class="card__description">{{ service.description }}</p>
-            </label>
-        </li>
-    </ul>
-</template>
+        </label>
+    </li>
+</ul></template>

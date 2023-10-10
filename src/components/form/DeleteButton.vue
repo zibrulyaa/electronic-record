@@ -4,13 +4,14 @@ import DeleteIcon from '@/components/icons/DeleteIcon.vue';
 </script>
 
 <template>
-    <button class="form-btn  form-btn-delete btn-reset" type="submit">
+    <button
+        class="form-btn  form-btn-delete btn-reset"
+        type="submit"
+    >
         <DeleteIcon />
         Удалить
     </button>
 </template>
 
-<style lang='scss' scoped>
-@import '@/assets/scss/vars';
-@import '@/assets/scss/mixins';
-</style>
+<style lang='scss' scoped>@import '@/assets/scss/vars';
+@import '@/assets/scss/mixins';</style>

@@ -4,7 +4,7 @@ import ArrowRightIcon from '@/components/icons/ArrowRightIcon.vue'
 import { ROUTER_PATHS } from '@/constants';
 
 interface Props {
-    categoriesCount: string,
+    categoriesCount: number,
 }
 defineProps<Props>()
 
@@ -14,21 +14,30 @@ defineProps<Props>()
     <div class="settings">
         <h2 class="subtitle">Настройки</h2>
         <div class="settings__inner">
-            <RouterLink class="card-setting" :to="ROUTER_PATHS.EDIT_CATEGORIES">
+            <RouterLink
+                class="card-setting"
+                :to="ROUTER_PATHS.ADMINISTRATOR_CATEGORIES"
+            >
                 <h3 class="card-setting__title">Услуги</h3>
                 <div class="card-setting__inner">
                     <div class="card-setting__count">{{ categoriesCount }}</div>
                     <ArrowRightIcon />
                 </div>
             </RouterLink>
-            <RouterLink class="card-setting" :to="'/'">
+            <RouterLink
+                class="card-setting"
+                :to="''"
+            >
                 <h3 class="card-setting__title">Окна</h3>
                 <div class="card-setting__inner">
                     <div class="card-setting__count">9</div>
                     <ArrowRightIcon />
                 </div>
             </RouterLink>
-            <RouterLink class="card-setting" :to="'/'">
+            <RouterLink
+                class="card-setting"
+                :to="''"
+            >
                 <h3 class="card-setting__title">Терминалы</h3>
                 <div class="card-setting__inner">
                     <div class="card-setting__count">1</div>
@@ -65,6 +74,7 @@ defineProps<Props>()
     border-radius: 10px;
     box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);
     cursor: pointer;
+
     &:hover {
         padding: 31px;
         border: 1px solid $disabled;
@@ -102,5 +112,4 @@ defineProps<Props>()
         font-weight: 400;
         line-height: 140%;
     }
-}
-</style>
+}</style>

@@ -6,7 +6,10 @@ import { ROUTER_PATHS } from '@/constants';
 <template>
     <AppLayout>
         <div class="wrapper">
-            <RouterLink class="btn terminal-btn" :to="ROUTER_PATHS.CATEGORIES">Подойти к терминалу</RouterLink>
+            <RouterLink
+                class="btn terminal-btn"
+                :to="ROUTER_PATHS.CATEGORIES"
+            >Подойти к терминалу</RouterLink>
         </div>
     </AppLayout>
 </template>
@@ -15,7 +18,7 @@ import { ROUTER_PATHS } from '@/constants';
 @import '@/assets/scss/vars';
 @import '@/assets/scss/mixins';
 
-.wrapper{
+.wrapper {
     display: flex;
     justify-content: center;
     align-items: center;

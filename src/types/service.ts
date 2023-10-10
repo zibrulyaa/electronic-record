@@ -1,10 +1,10 @@
-import type { Windows } from "./window"
+import type { Window } from "./window"
 
 export type Service = {
-    id: string,
+    id?: string,
     categoryId: string,
     name: string,
     description: string,
-    windows: Windows[],
+    windows: Window[],
     serviceTime: string
 }

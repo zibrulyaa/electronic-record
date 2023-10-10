@@ -11,6 +11,7 @@ defineEmits(['closeForm'])
 const props = withDefaults(defineProps<{
     title: string,
     submitCallback: Function,
+    add: boolean,
     currentName?: string,
     currentDescription?: string,
     additionalCallback?: Function
@@ -31,24 +32,37 @@ const description = ref<string>(props.currentDescription)
         <div class="form">
             <label class="label">
                 <span class="label-title">Название</span>
-                <input class="input-reset input"
-                       type="text"
-                       name="name"
-                       placeholder="Введите название"
-                       v-model="name" />
+                <input
+                    class="input-reset input"
+                    type="text"
+                    name="name"
+                    placeholder="Введите название"
+                    v-model="name"
+                />
             </label>
             <label class="label">
                 <span class="label-title">Описание</span>
-                <input class="input-reset input"
-                       type="text"
-                       name="description"
-                       placeholder="Введите название"
-                       v-model="description" />
+                <input
+                    class="input-reset input"
+                    type="text"
+                    name="description"
+                    placeholder="Введите название"
+                    v-model="description"
+                />
             </label>
             <div class="form__btns">
-                <SubmitButton @click.left="submitCallback(name, description)" />
-                <UpdateButton @click.left="submitCallback(name, description)" />
-                <DeleteButton @click.left="additionalCallback()" />
+                <SubmitButton
+                    v-if="add"
+                    @click.left="submitCallback(name, description)"
+                />
+                <UpdateButton
+                    v-if="!add"
+                    @click.left="submitCallback(name, description)"
+                />
+                <DeleteButton
+                    v-if="!add"
+                    @click.left="additionalCallback()"
+                />
                 <DiscardButton @click.left="$emit('closeForm')" />
             </div>
         </div>
@@ -73,5 +87,4 @@ const description = ref<string>(props.currentDescription)
         display: flex;
         gap: 20px;
     }
-}
-</style>
+}</style>

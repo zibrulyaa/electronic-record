@@ -1,4 +1,5 @@
-export type Windows = {
+export type Window = {
     id: string,
-    name: string
+    name: string, 
+    status: string
 }

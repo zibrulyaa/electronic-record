@@ -10,8 +10,10 @@ const { categoriesCount } = useCategories()
 
 <template>
     <AppLayout>
-        <div class="wrapper" v-if="categoriesCount">
+        <div class="wrapper"
+             v-if="categoriesCount">
             <SettingsHeader :categoriesCount="categoriesCount" />
+            <h3 class="subtitle">Статистика</h3>
         </div>
     </AppLayout>
 </template>

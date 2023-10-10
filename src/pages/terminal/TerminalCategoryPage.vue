@@ -14,11 +14,12 @@ import { useCategories } from '@/composables/useCategories'
 // Get all categories
 const { categories } = useCategories()
 
-const selectedCateroty = ref<Category | null>(null)
+const selectedCaterory = ref<Category>()
 
 const chooseCategory = (choosenCategory: Category) => {
-    selectedCateroty.value = choosenCategory
+    selectedCaterory.value = choosenCategory
 }
+
 const router = useRouter()
 
 function goBack() {
@@ -30,19 +31,34 @@ function goBack() {
 <template>
     <AppLayout>
         <div class="wrapper">
-            <div class="content" v-if="categories?.length === 0">
+            <div
+                class="content"
+                v-if="categories?.length === 0"
+            >
                 <header class="header">
-                    <button class="btn-reset back-btn" @click="goBack">Вернуться назад</button>
+                    <button
+                        class="btn-reset back-btn"
+                        @click="goBack"
+                    >Вернуться назад</button>
                     <div class="title">Все категории</div>
                 </header>
                 <div class="empty">Категории не были найдены 🙁</div>
             </div>
-            <div class="content" v-else-if="categories">
+            <div
+                class="content"
+                v-else-if="categories"
+            >
                 <header class="header">
-                    <button class="btn-reset back-btn" @click="goBack">Вернуться назад</button>
+                    <button
+                        class="btn-reset back-btn"
+                        @click="goBack"
+                    >Вернуться назад</button>
                     <div class="title">Выберите категорию</div>
                 </header>
-                <CategoryCard :categories="categories" @choose-category="chooseCategory" />
+                <CategoryCard
+                    :categories="categories"
+                    @choose-category="chooseCategory"
+                />
             </div>
             <SkeletonCard v-else />
         </div>
@@ -73,5 +89,4 @@ function goBack() {
     margin-top: auto;
     margin-left: auto;
     margin-right: auto;
-}
-</style>
+}</style>

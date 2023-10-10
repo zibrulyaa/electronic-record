@@ -5,7 +5,7 @@ import DiscardIcon from '../icons/DiscardIcon.vue';
 <template>
     <button class="form-btn form-btn-discard btn-reset">
         <DiscardIcon />
-        Отменить
+        Назад
     </button>
 </template>
 

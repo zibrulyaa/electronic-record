@@ -1,12 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import TerminalPage from '@/pages/TerminalPage.vue'
-import TerminalCategoryPage from '@/pages/TerminalCategoryPage.vue'
-import TeminalServicePage from '@/pages/TeminalServicePage.vue'
-import WindowsPage from '@/pages/WindowsPage.vue'
-import EmployePage from '@/pages/EmployePage.vue'
-import AdministratorPage from '@/pages/AdministratorPage.vue'
-import EditCategoriesPage from '@/pages/EditCategoriesPage.vue'
-import EditCategoryPage from '@/pages/EditCategoryPage.vue'
+import TerminalPage from '@/pages/terminal/TerminalPage.vue'
+import TerminalCategoryPage from '@/pages/terminal/TerminalCategoryPage.vue'
+import TeminalServicePage from '@/pages/terminal/TeminalServicePage.vue'
+
+import WindowsPage from '@/pages/window/WindowsPage.vue'
+import EmployePage from '@/pages/employe/EmployePage.vue'
+
+import AdministratorPage from '@/pages/administrator/AdministratorPage.vue'
+import AdministratorCategoriesPage from '@/pages/administrator/AdministratorCategoriesPage.vue'
+import AdministratorCategoryPage from '@/pages/administrator/AdministratorCategoryPage.vue'
+import AdministratorServicePage from '@/pages/administrator/AdministratorServicePage.vue'
 
 import { ROUTER_PATHS } from '@/constants'
 
@@ -44,14 +47,20 @@ const router = createRouter({
       component: AdministratorPage
     },
     {
-      path: ROUTER_PATHS.EDIT_CATEGORIES,
-      name: ROUTER_PATHS.EDIT_CATEGORIES,
-      component: EditCategoriesPage
+      path: ROUTER_PATHS.ADMINISTRATOR_CATEGORIES,
+      name: ROUTER_PATHS.ADMINISTRATOR_CATEGORIES,
+      component: AdministratorCategoriesPage
     },
     {
-      path: ROUTER_PATHS.EDIT_CATEGORY,
-      name: ROUTER_PATHS.EDIT_CATEGORY,
-      component: EditCategoryPage
+      path: ROUTER_PATHS.ADMINISTRATOR_CATEGORY_EDIT,
+      name: ROUTER_PATHS.ADMINISTRATOR_CATEGORY_EDIT,
+      component: AdministratorCategoryPage
+    }
+    ,
+    {
+      path: ROUTER_PATHS.ADMINISTRATOR_SERVICE_EDIT,
+      name: ROUTER_PATHS.ADMINISTRATOR_SERVICE_EDIT,
+      component: AdministratorServicePage,
     }
   ]
 })

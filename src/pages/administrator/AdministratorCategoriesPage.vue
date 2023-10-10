@@ -3,12 +3,14 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 
+import type { Category } from '@/types';
 import { CATEGORIES_URL } from '@/constants';
+
 import { useCategories } from '@/composables/useCategories'
 
+import AppLayout from '@/components/AppLayout.vue';
 import CategoryCard from '@/components/administrator/categories/CategoryCard.vue';
 import CategoryForm from '@/components/administrator/categories/CategoryForm.vue';
-import AppLayout from '@/components/AppLayout.vue';
 
 const router = useRouter()
 
@@ -18,6 +20,8 @@ function goBack() {
 
 const { categories, getCategories } = useCategories()
 
+
+//#region FormActions
 const isFormShown = ref<boolean>(false)
 
 function openForm() {
@@ -34,37 +38,53 @@ const config = {
 }
 
 async function addCatagory(name: string, description: string) {
-    const formData = new FormData()
-    formData.append('name', name)
-    formData.append('description', description)
-    await axios.post(CATEGORIES_URL, formData, config)
-    closeForm()
-}
+    const data: Category = {
+        name,
+        description
+    }
 
+    await axios.post(CATEGORIES_URL, data, config)
+        .then(() => closeForm())
+        .catch(error => console.log(error))
+}
+//#endregion
 </script>
 
 <template>
     <AppLayout>
         <div class="wrapper">
-            <CategoryForm v-show="isFormShown"
-                          @close-form="closeForm"
-                          title="Добавление новой категории"
-                          :submit-callback="addCatagory" />
-            <div class="content"
-                 v-show="!isFormShown">
+            <CategoryForm
+                title="Добавление новой категории"
+                v-show="isFormShown"
+                :add="true"
+                :submit-callback="addCatagory"
+                @close-form="closeForm"
+            />
+            <div
+                class="content"
+                v-show="!isFormShown"
+            >
                 <header class="header">
-                    <button class="btn-reset back-btn"
-                            @click="goBack">Вернуться назад</button>
+                    <button
+                        class="btn-reset back-btn"
+                        @click.left="goBack"
+                    >Вернуться назад</button>
                     <div class="title">Настройки "Услуги"</div>
                 </header>
-                <div class="categories"
-                     v-if="categories">
-                    <button class="btn-reset categories-btn"
-                            @click="openForm">Добавить категорию</button>
+                <div
+                    class="categories"
+                    v-if="categories"
+                >
+                    <button
+                        class="btn-reset categories-btn"
+                        @click="openForm"
+                    >Добавить категорию</button>
                     <CategoryCard :categories="categories" />
                 </div>
-                <div class="content"
-                     v-else>Загрузка</div>
+                <div
+                    class="content"
+                    v-else
+                >Загрузка</div>
             </div>
         </div>
     </AppLayout>

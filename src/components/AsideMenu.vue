@@ -28,30 +28,33 @@ const routeName = computed(() => route.name)
             <ul class="list-reset menu__list">
                 <li class="menu__list-item">
                     <RouterLink class="menu__list-link"
-                        :class="{ active: routeName === ('/' || '/category' || '/category/:rid/services') ? true : false }"
-                        :to="ROUTER_PATHS.TERMNINAL">
+                                :class="{ active: routeName === ('/' || '/category' || '/category/:rid/services') ? true : false }"
+                                :to="ROUTER_PATHS.TERMNINAL">
                         <TerminalIcon
-                            :is-active="routeName === ('/' || '/category' || '/category/:rid/services') ? true : false" />
+                                      :is-active="routeName === ('/' || '/category' || '/category/:rid/services') ? true : false" />
                         <span>Терминал</span>
                     </RouterLink>
                 </li>
                 <li class="menu__list-item">
-                    <RouterLink class="menu__list-link" :class="{ active: routeName === '/windows' ? true : false }"
-                        :to="ROUTER_PATHS.WINDOWS">
+                    <RouterLink class="menu__list-link"
+                                :class="{ active: routeName === '/windows' ? true : false }"
+                                :to="ROUTER_PATHS.WINDOWS">
                         <WindowsIcon :is-active="routeName === '/windows' ? true : false" />
                         <span>Окно очереди</span>
                     </RouterLink>
                 </li>
                 <li class="menu__list-item">
-                    <RouterLink class="menu__list-link" :class="{ active: routeName === '/employe' ? true : false }"
-                        :to="ROUTER_PATHS.EMPLOYE">
+                    <RouterLink class="menu__list-link"
+                                :class="{ active: routeName === '/employe' ? true : false }"
+                                :to="ROUTER_PATHS.EMPLOYE">
                         <EmployeIcon :is-active="routeName === '/employe' ? true : false" />
                         <span>Сотрудники</span>
                     </RouterLink>
                 </li>
                 <li class="menu__list-item">
-                    <RouterLink class="menu__list-link" :class="{ active: routeName === '/administrator' ? true : false }"
-                        :to="ROUTER_PATHS.ADMINISTRATOR">
+                    <RouterLink class="menu__list-link"
+                                :class="{ active: routeName === '/administrator' ? true : false }"
+                                :to="ROUTER_PATHS.ADMINISTRATOR">
                         <AdministratorIcon :is-active="routeName === '/administrator' ? true : false" />
                         <span>Администратор</span>
                     </RouterLink>

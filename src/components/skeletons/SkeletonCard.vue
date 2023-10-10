@@ -5,7 +5,11 @@
     <div class="wrapper">
         <h3 class="title-skeleton"></h3>
         <ul class="cards__inner list-reset">
-            <div class="card-skeleton" v-for="key in 6" :key="key">
+            <div
+                class="card-skeleton"
+                v-for="key in 9"
+                :key="key"
+            >
                 <h3 class="card-skeleton__title"></h3>
                 <p class="card-skeleton__description"></p>
             </div>
@@ -77,5 +81,4 @@
     100% {
         background-position: 280px;
     }
-}
-</style>
+}</style>

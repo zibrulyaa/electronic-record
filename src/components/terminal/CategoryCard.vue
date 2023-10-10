@@ -10,10 +10,14 @@ defineProps<{
 
 <template>
     <ul class="cards__inner list-reset">
-        <li v-for="caterory in categories"
-            :key="caterory.id">
-            <RouterLink class="card"
-                        :to="`${ROUTER_PATHS.CATEGORIES}/${caterory.id}/services`">
+        <li
+            v-for="caterory in categories"
+            :key="caterory.id"
+        >
+            <RouterLink
+                class="card"
+                :to="`${ROUTER_PATHS.CATEGORIES}/${caterory.id}/services`"
+            >
                 <h3 class="card__title">{{ caterory.name }}</h3>
                 <p class="card__description">{{ caterory.description }}</p>
             </RouterLink>
@@ -21,7 +25,5 @@ defineProps<{
     </ul>
 </template>
 
-<style lang='scss' scoped>
-@import '@/assets/scss/vars';
-@import '@/assets/scss/mixins';
-</style>
+<style lang='scss' scoped>@import '@/assets/scss/vars';
+@import '@/assets/scss/mixins';</style>

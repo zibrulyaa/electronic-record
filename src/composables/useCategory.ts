@@ -5,7 +5,7 @@ import type { Category } from '@/types';
 import { CATEGORIES_URL } from '@/constants';
 
 
-export const useCategory = (categoryId: string | undefined) => {
+export const useCategory = (categoryId: string) => {
     const category = ref<Category>();
 
     const getCategory = async () => {
@@ -15,7 +15,6 @@ export const useCategory = (categoryId: string | undefined) => {
         }
         catch (error) {
             console.log(error)
-            category.value = undefined
         }
     }
 
