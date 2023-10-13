@@ -88,42 +88,28 @@ function closeServiceForm() {
 <template>
     <AppLayout>
         <div class="wrapper">
-            <div
-                class="content"
-                v-if="category"
-            >
-                <CategoryForm
-                    title="Редактирование"
-                    :category-id="categoryId"
-                    :add="false"
-                    :submit-callback="updateCategory"
-                    :additional-callback="deleteCategory"
-                    :current-name="category.name"
-                    :current-description="category.description"
-                    @close-form="closeForm()"
-                    v-show="isCategoryFormShown"
-                />
+            <div class="content"
+                 v-if="category">
+                <CategoryForm title="Редактирование"
+                              v-show="isCategoryFormShown"
+                              :update-category="updateCategory"
+                              :delete-category="deleteCategory"
+                              :current-name="category.name"
+                              :current-description="category.description"
+                              :discard-changes="closeForm" />
+                <ServiceForm title="Новая услуга"
+                             v-show="isServiceFormShown"
+                             :add-service="addService"
+                             :discard-changes="closeServiceForm" />
 
-                <ServiceForm
-                    title="Новая услуга"
-                    :submit-callback="addService"
-                    :add="true"
-                    v-show="isServiceFormShown"
-                    @close-service-form="closeServiceForm"
-                />
-
-                <ServiceCards
-                    v-if="services"
-                    v-show="isCategoryFormShown"
-                    :services="services"
-                    :categoryId="categoryId"
-                    @open-service-form="openServiceForm"
-                />
+                <ServiceCards v-if="services"
+                              v-show="isCategoryFormShown"
+                              :services="services"
+                              :categoryId="categoryId"
+                              @open-service-form="openServiceForm" />
             </div>
-            <div
-                class="content"
-                v-else
-            >Загрузка...</div>
+            <div class="content"
+                 v-else>Загрузка...</div>
         </div>
     </AppLayout>
 </template>

@@ -1,69 +1,49 @@
 <script setup lang='ts'>
 import { ref } from 'vue';
 
-import SubmitButton from '@/components/form/SubmitButton.vue';
-import DeleteButton from '@/components/form/DeleteButton.vue';
+import SubmitButton from '@/components/form/SubmitButton.vue'
+import DeleteButton from '@/components/form/DeleteButton.vue'
 import DiscardButton from '@/components/form/DiscardButton.vue'
-import UpdateButton from '@/components/form/UpdateButton.vue';
+import UpdateButton from '@/components/form/UpdateButton.vue'
 
-defineEmits(['closeForm'])
+import InputName from '@/components/form/InputName.vue'
+import InputDescription from '@/components/form/InputDescription.vue';
+
 
 const props = withDefaults(defineProps<{
     title: string,
-    submitCallback: Function,
-    add: boolean,
     currentName?: string,
     currentDescription?: string,
-    additionalCallback?: Function
+    addCategory?: Function | null,
+    updateCategory?: Function | null,
+    deleteCategory?: Function | null,
+    discardChanges: Function
 }>(), {
     currentName: "",
     currentDescription: "",
-    additionalCallback: () => { }
+    addCategory: null,
+    updateCategory: null,
+    deleteCategory: null,
 })
 
 const name = ref<string>(props.currentName)
 const description = ref<string>(props.currentDescription)
-
 </script>
 
 <template>
-    <div class="form__inner">
+    <div class="form">
         <h3 class="subtitle">{{ title }}</h3>
-        <div class="form">
-            <label class="label">
-                <span class="label-title">Название</span>
-                <input
-                    class="input-reset input"
-                    type="text"
-                    name="name"
-                    placeholder="Введите название"
-                    v-model="name"
-                />
-            </label>
-            <label class="label">
-                <span class="label-title">Описание</span>
-                <input
-                    class="input-reset input"
-                    type="text"
-                    name="description"
-                    placeholder="Введите название"
-                    v-model="description"
-                />
-            </label>
-            <div class="form__btns">
-                <SubmitButton
-                    v-if="add"
-                    @click.left="submitCallback(name, description)"
-                />
-                <UpdateButton
-                    v-if="!add"
-                    @click.left="submitCallback(name, description)"
-                />
-                <DeleteButton
-                    v-if="!add"
-                    @click.left="additionalCallback()"
-                />
-                <DiscardButton @click.left="$emit('closeForm')" />
+        <div class="form__inner">
+            <InputName v-model="name" />
+            <InputDescription v-model="description" />
+            <div class="form__buttons">
+                <SubmitButton v-if="addCategory"
+                              @click.left="addCategory(name, description)" />
+                <UpdateButton v-if="updateCategory"
+                              @click.left="updateCategory(name, description)" />
+                <DeleteButton v-if="deleteCategory"
+                              @click.left="deleteCategory()" />
+                <DiscardButton @click.left="discardChanges()" />
             </div>
         </div>
     </div>
@@ -72,19 +52,4 @@ const description = ref<string>(props.currentDescription)
 <style lang='scss' scoped>
 @import '@/assets/scss/vars';
 @import '@/assets/scss/mixins';
-
-.form {
-    background-color: $white;
-    padding: 32px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);
-
-    &__title {
-        margin-bottom: 24px;
-    }
-
-    &__btns {
-        display: flex;
-        gap: 20px;
-    }
-}</style>
+</style>

@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { ref, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 
 import type { Service } from '@/types/'
 
@@ -10,10 +10,10 @@ import { useCategory } from '@/composables/useCategory';
 import AppLayout from '@/components/AppLayout.vue';
 import ServiceCard from '@/components/terminal/ServiceCard.vue';
 import SkeletonCard from '@/components/skeletons/SkeletonCard.vue'
+import BackButton from '@/components/BackButton.vue';
 
 const route = useRoute()
-const router = useRouter()
-const categoryId = computed((): number => Number(route.params.categoryId));
+const categoryId = computed((): string => route.params.categoryId.toString());
 
 const { category } = useCategory(categoryId.value)
 const { services } = useServices(categoryId.value)
@@ -23,48 +23,33 @@ const selectedService = ref<Service>()
 const chooseService = (choosenService: Service) => {
     selectedService.value = choosenService
 }
-
-function goBack() {
-    router.go(-1)
-}
 </script>
 
 <template>
     <AppLayout>
         <div class="wrapper">
-            <div
-                class="content"
-                v-if="services?.length === 0"
-            >
+            <!-- Не найдены услуги -->
+            <div class="content"
+                 v-if="services?.length === 0">
                 <header class="header">
-                    <button
-                        class="btn-reset back-btn"
-                        @click.left="goBack"
-                    >Вернуться назад</button>
+                    <BackButton />
                     <div class="title">Категория: "{{ category?.name }}"</div>
                 </header>
                 <div class="empty">Услуги не были найдены 🙁</div>
             </div>
-            <div
-                class="content"
-                v-else-if="services"
-            >
+            <!-- Найдены услуги -->
+            <div class="content"
+                 v-else-if="services">
                 <header class="header">
-                    <button
-                        class="btn-reset back-btn"
-                        @click.left="goBack"
-                    >Вернуться назад</button>
+                    <BackButton />
                     <div class="title">Категория: "{{ category?.name }}"</div>
                 </header>
-                <ServiceCard
-                    :services="services"
-                    @choose-service="chooseService"
-                />
-                <button
-                    class="btn ticket-btn btn-reset"
-                    :disabled="!selectedService"
-                >Взять талон</button>
+                <ServiceCard :services="services"
+                             @choose-service="chooseService" />
+                <button class="btn ticket-btn btn-reset"
+                        :disabled="!selectedService">Взять талон</button>
             </div>
+            <!-- Скелетоны -->
             <SkeletonCard v-else />
         </div>
     </AppLayout>
@@ -82,4 +67,5 @@ function goBack() {
     margin-top: auto;
     margin-left: auto;
     margin-right: auto;
-}</style>
+}
+</style>

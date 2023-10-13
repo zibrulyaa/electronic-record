@@ -2,16 +2,13 @@
 import AppLayout from '@/components/AppLayout.vue';
 import CategoryCard from '@/components/terminal/CategoryCard.vue';
 import SkeletonCard from '@/components/skeletons/SkeletonCard.vue'
+import BackButton from '@/components/BackButton.vue';
 
 import { ref } from 'vue'
 
 import type { Category } from '@/types/'
-import { useRouter } from 'vue-router';
 import { useCategories } from '@/composables/useCategories'
 
-
-
-// Get all categories
 const { categories } = useCategories()
 
 const selectedCaterory = ref<Category>()
@@ -19,47 +16,31 @@ const selectedCaterory = ref<Category>()
 const chooseCategory = (choosenCategory: Category) => {
     selectedCaterory.value = choosenCategory
 }
-
-const router = useRouter()
-
-function goBack() {
-    router.go(-1)
-}
-
 </script>
 
 <template>
     <AppLayout>
         <div class="wrapper">
-            <div
-                class="content"
-                v-if="categories?.length === 0"
-            >
+            <!-- Не найдены категории -->
+            <div class="content"
+                 v-if="categories?.length === 0">
                 <header class="header">
-                    <button
-                        class="btn-reset back-btn"
-                        @click="goBack"
-                    >Вернуться назад</button>
+                    <BackButton />
                     <div class="title">Все категории</div>
                 </header>
                 <div class="empty">Категории не были найдены 🙁</div>
             </div>
-            <div
-                class="content"
-                v-else-if="categories"
-            >
+            <!-- Найдены категории -->
+            <div class="content"
+                 v-else-if="categories">
                 <header class="header">
-                    <button
-                        class="btn-reset back-btn"
-                        @click="goBack"
-                    >Вернуться назад</button>
+                    <BackButton />
                     <div class="title">Выберите категорию</div>
                 </header>
-                <CategoryCard
-                    :categories="categories"
-                    @choose-category="chooseCategory"
-                />
+                <CategoryCard :categories="categories"
+                              @choose-category="chooseCategory" />
             </div>
+            <!-- Скелетоны -->
             <SkeletonCard v-else />
         </div>
     </AppLayout>
@@ -89,4 +70,5 @@ function goBack() {
     margin-top: auto;
     margin-left: auto;
     margin-right: auto;
-}</style>
+}
+</style>

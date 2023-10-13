@@ -15,6 +15,9 @@ const { categoriesCount } = useCategories()
             <SettingsHeader :categoriesCount="categoriesCount" />
             <h3 class="subtitle">Статистика</h3>
         </div>
+        <div class="skeleton" v-else>
+            Загрузка...
+        </div>
     </AppLayout>
 </template>
 

@@ -3,10 +3,9 @@
 import ArrowRightIcon from '@/components/icons/ArrowRightIcon.vue'
 import { ROUTER_PATHS } from '@/constants';
 
-interface Props {
+defineProps<{
     categoriesCount: number,
-}
-defineProps<Props>()
+}>()
 
 </script>
 
@@ -14,30 +13,24 @@ defineProps<Props>()
     <div class="settings">
         <h2 class="subtitle">Настройки</h2>
         <div class="settings__inner">
-            <RouterLink
-                class="card-setting"
-                :to="ROUTER_PATHS.ADMINISTRATOR_CATEGORIES"
-            >
+            <RouterLink class="card-setting"
+                        :to="ROUTER_PATHS.ADMINISTRATOR_CATEGORIES">
                 <h3 class="card-setting__title">Услуги</h3>
                 <div class="card-setting__inner">
                     <div class="card-setting__count">{{ categoriesCount }}</div>
                     <ArrowRightIcon />
                 </div>
             </RouterLink>
-            <RouterLink
-                class="card-setting"
-                :to="''"
-            >
+            <RouterLink class="card-setting"
+                        :to="''">
                 <h3 class="card-setting__title">Окна</h3>
                 <div class="card-setting__inner">
                     <div class="card-setting__count">9</div>
                     <ArrowRightIcon />
                 </div>
             </RouterLink>
-            <RouterLink
-                class="card-setting"
-                :to="''"
-            >
+            <RouterLink class="card-setting"
+                        :to="''">
                 <h3 class="card-setting__title">Терминалы</h3>
                 <div class="card-setting__inner">
                     <div class="card-setting__count">1</div>
@@ -112,4 +105,5 @@ defineProps<Props>()
         font-weight: 400;
         line-height: 140%;
     }
-}</style>
+}
+</style>
