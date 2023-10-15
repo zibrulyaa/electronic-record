@@ -48,31 +48,35 @@ async function addCatagory(name: string, description: string) {
 <template>
     <AppLayout>
         <div class="wrapper">
-
-            <CategoryForm title="Добавление новой категории"
-                          v-show="isFormShown"
-                          :add="true"
-                          :add-category="addCatagory"
-                          :discard-changes="closeForm" />
-
-            <div class="content"
-                 v-if="categories"
-                 v-show="!isFormShown">
-
+            <CategoryForm
+                title="Добавление новой категории"
+                v-show="isFormShown"
+                :add-category="addCatagory"
+                :discard-changes="closeForm"
+            />
+            <div
+                class="content"
+                v-if="categories"
+                v-show="!isFormShown"
+            >
                 <header class="header">
                     <BackButton />
                     <div class="title">Настройки "Услуги"</div>
                 </header>
                 <div class="categories">
-                    <button class="btn-reset categories-btn"
-                            @click="openForm">
+                    <button
+                        class="btn-reset categories__add-btn"
+                        @click="openForm"
+                    >
                         Добавить категорию
                     </button>
                     <CategoryCard :categories="categories" />
                 </div>
             </div>
-            <div class="content"
-                 v-else>Загрузка...
+            <div
+                class="content"
+                v-else
+            >Загрузка...
             </div>
         </div>
     </AppLayout>
@@ -83,7 +87,7 @@ async function addCatagory(name: string, description: string) {
 @import '@/assets/scss/mixins';
 
 
-.categories-btn {
+.categories__add-btn {
     width: 100%;
     border-radius: 10px;
     border: 3px dashed $disabled;

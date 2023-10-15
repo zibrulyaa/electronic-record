@@ -58,7 +58,9 @@ const windows = [
 ]
 
 const props = defineProps<{
-    modelValue: Window[]
+    modelValue: Window[],
+    error?: string,
+    isError?: boolean
 }>()
 
 const emit = defineEmits(['update:modelValue'])
@@ -77,18 +79,28 @@ const selectedWindows = computed({
 <template>
     <label class="label">
         <span class="label-title">Окна</span>
-        <VueMultiselect v-model="selectedWindows"
-                        :options="windows"
-                        :multiple="true"
-                        :close-on-select="true"
-                        :preserve-search="true"
-                        label="name"
-                        track-by="name"
-                        placeholder="Выберите окна"
-                        deselect-label="Нажмите enter чтобы убрать"
-                        selected-label="Выбрано"
-                        select-label="Нажмите enter чтобы выбрать">
-        </VueMultiselect>
+        <div class="input__wrapper">
+            <VueMultiselect
+                v-model="selectedWindows"
+                :options="windows"
+                :multiple="true"
+                :close-on-select="true"
+                :preserve-search="true"
+                label="name"
+                track-by="name"
+                placeholder="Выберите окна"
+                deselect-label="Нажмите enter чтобы убрать"
+                selected-label="Выбрано"
+                select-label="Нажмите enter чтобы выбрать"
+            >
+            </VueMultiselect>
+            <div
+                class="error__label"
+                v-if="error"
+            >
+                {{ error }}
+            </div>
+        </div>
     </label>
 </template>
 

@@ -2,7 +2,9 @@
 import { computed } from 'vue';
 
 const props = defineProps<{
-    modelValue: string
+    modelValue: string,
+    error?: string,
+    isError?: boolean
 }>()
 
 const emit = defineEmits(['update:modelValue'])
@@ -21,15 +23,20 @@ const description = computed({
 <template>
     <label class="label">
         <span class="label-title">Описание</span>
-        <input class="input-reset input"
-               type="text"
-               name="description"
-               placeholder="Введите описание"
-               v-model="description" />
-    </label>
-</template>
-
-<style lang='scss' scoped>
-@import '@/assets/scss/vars';
-@import '@/assets/scss/mixins';
-</style>
+        <div class="input__wrapper">
+            <input
+                class="input-reset input"
+                :class="{ input__error: isError }"
+                type="text"
+                name="description"
+                placeholder="Введите описание"
+                v-model="description"
+            />
+            <div
+                class="error__label"
+                v-if="error"
+            >
+                {{ error }}
+            </div>
+        </div>
+    </label></template>

@@ -12,11 +12,13 @@ defineProps<{
 <template>
     <ul class="category__list list-reset">
         <li
-            class="category__card"
             v-for="category in categories"
             :key="category.id"
         >
-            <RouterLink :to="{ name: ROUTER_PATHS.ADMINISTRATOR_CATEGORY_EDIT, params: { categoryId: category.id } }">
+            <RouterLink
+                class="category__card"
+                :to="{ name: ROUTER_PATHS.ADMINISTRATOR_CATEGORY_EDIT, params: { categoryId: category.id } }"
+            >
                 <header class="category__card-header">
                     <h3 class="category__card-title">{{ category.name }}</h3>
                     <ArrowRightIcon />
@@ -45,6 +47,7 @@ defineProps<{
     // .category__card
 
     &__card {
+        display: block;
         padding: 32px;
         border-radius: 10px;
         background-color: $white;
