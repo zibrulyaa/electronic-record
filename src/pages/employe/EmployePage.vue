@@ -1,13 +1,12 @@
 <script setup lang='ts'>
-import AppLayout from '@/components/AppLayout.vue';
-interface Props {
-}
-defineProps<Props>()
+import AppLayout from '@/components/AppLayout.vue'
+import SelectWindows from '@/components/employe/SelectWindows.vue'
+
 </script>
 
 <template>
     <AppLayout>
-        Employe page
+        <SelectWindows />
     </AppLayout>
 </template>
 

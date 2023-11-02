@@ -50,7 +50,7 @@ const autoplay = {
         class="table"
         :modules="modules"
         :autoplay="autoplay"
-        :slidesPerView="9"
+        :slides-per-view="9"
         :slides-per-group="9"
         :pagination="pagination"
     >
@@ -74,10 +74,9 @@ const autoplay = {
             </ul>
         </swiper-slide>
     </swiper>
-    <div class="swiper-pagination"></div>
 </template>
 
-<style lang='scss'>
+<style lang='scss' scoped>
 @import '@/assets/scss/vars';
 @import '@/assets/scss/mixins';
 
@@ -86,7 +85,6 @@ const autoplay = {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     text-align: center;
-    position: relative;
 
     &__title {
         background-color: $white;
@@ -128,31 +126,5 @@ const autoplay = {
 }
 
 
-.swiper-pagination {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    position: absolute;
-    bottom: 20px;
 
-    &-bullet {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
-        color: $black;
-        opacity: 1;
-        background-color: $white;
-        border: 1px solid $gray;
-
-        &-active {
-            background-color: $accent;
-            color: $white;
-            border: 1px solid $accent;
-        }
-    }
-
-}
 </style>
