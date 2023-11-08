@@ -19,43 +19,30 @@ const pagination = {
         return '<span class="' + className + '">' + (index + 1) + '</span>';
     },
 }
-
-const grid = {
-    fill: 'row',
-    rows: 3,
-}
 </script>
 
 <template>
-    <div
-        class="content"
-        v-if="windows"
-    >
+    <div class="content"
+         v-if="windows">
         <h1 class="title">Выбрать окно</h1>
-        <swiper
-            class="windows__wrapper"
-            :modules="modules"
-            :grid="{
-                fill: 'row',
-                rows: 3
-            }"
-            :slides-per-view="3"
-            :slides-per-group="9"
-            :pagination="pagination"
-        >
-            <swiper-slide
-                v-for="window in windows"
-                :key="window.id"
-            >
+        <swiper class="windows__slider"
+                :modules="modules"
+                :pagination="pagination"
+                :grid="{
+                    fill: 'column',
+                    rows: 9
+                }"
+                :space-between="20">
+            <swiper-slide class="windows__slide"
+                          v-for="window in windows"
+                          :key="window.id">
                 <WindowCard :window="window" />
             </swiper-slide>
         </swiper>
     </div>
 
-    <div
-        class="empty"
-        v-else
-    >
+    <div class="empty"
+         v-else>
         Загрузка...
     </div>
 </template>
@@ -64,21 +51,22 @@ const grid = {
 @import '@/assets/scss/vars';
 @import '@/assets/scss/mixins';
 
-.windows__wrapper {
+.windows__slider {
     margin-top: 64px;
+    max-height: 470px;
 
-    .swiper-wrapper {
-        display: flex;
+    & .swiper-wrapper {
         flex-wrap: wrap;
-        gap: 20px;
+        flex-direction: column;
         .swiper-slide {
+            height: 102px;
             max-width: 380px;
-            width: 100% !important;
-            min-height: 102px;
-            max-height: 102px;
+            width: 100%;
         }
     }
 }
+
+
 
 .swiper-pagination {
     display: flex;

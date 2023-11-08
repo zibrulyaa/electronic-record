@@ -25,7 +25,7 @@ const clientPosition = (windowId: string, rowIndex: number) => {
         }
 
     if (windowQueue[rowIndex--])
-        return  `A${windowQueue[rowIndex].queueNumber}`
+        return `A${windowQueue[rowIndex].queueNumber}`
     else return ""
 }
 
@@ -46,27 +46,21 @@ const autoplay = {
 
 
 <template>
-    <swiper
-        class="table"
-        :modules="modules"
-        :autoplay="autoplay"
-        :slides-per-view="9"
-        :slides-per-group="9"
-        :pagination="pagination"
-    >
-        <swiper-slide
-            class="table__column"
-            v-for="window in windows"
-            :key="window.id"
-        >
+    <swiper class="table"
+            :modules="modules"
+            :autoplay="autoplay"
+            :slides-per-view="9"
+            :slides-per-group="9"
+            :pagination="pagination">
+        <swiper-slide class="table__column"
+                      v-for="window in windows"
+                      :key="window.id">
             <div class="table__title">{{ window.name }}</div>
             <ul class="table__content list-reset">
-                <li
-                    class="table__row"
+                <li class="table__row"
                     :class="{ current: row === 1 }"
                     v-for="(row, index) in 9"
-                    :key="index"
-                >
+                    :key="index">
                     <div class="table__row-text">
                         {{ clientPosition(window.id, row) }}
                     </div>
@@ -85,6 +79,7 @@ const autoplay = {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     text-align: center;
+    height: 560px;
 
     &__title {
         background-color: $white;
@@ -124,7 +119,4 @@ const autoplay = {
         }
     }
 }
-
-
-
 </style>
