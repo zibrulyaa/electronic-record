@@ -4,7 +4,9 @@ import TerminalCategoryPage from '@/pages/terminal/TerminalCategoryPage.vue'
 import TeminalServicePage from '@/pages/terminal/TeminalServicePage.vue'
 
 import WindowsPage from '@/pages/window/WindowsPage.vue'
+
 import EmployePage from '@/pages/employe/EmployePage.vue'
+import EmployeWorkspacePage from '@/pages/employe/EmployeWorkspacePage.vue'
 
 import AdministratorPage from '@/pages/administrator/AdministratorPage.vue'
 import AdministratorCategoriesPage from '@/pages/administrator/AdministratorCategoriesPage.vue'
@@ -40,6 +42,11 @@ const router = createRouter({
       path: ROUTER_PATHS.EMPLOYE,
       name: ROUTER_PATHS.EMPLOYE,
       component: EmployePage
+    },
+    {
+      path: ROUTER_PATHS.EMPLOYE_WORKSPACE,
+      name: ROUTER_PATHS.EMPLOYE_WORKSPACE,
+      component: EmployeWorkspacePage
     },
     {
       path: ROUTER_PATHS.ADMINISTRATOR,

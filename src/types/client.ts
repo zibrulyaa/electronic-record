@@ -1,8 +1,8 @@
-export type Queue = {
+export type Client = {
     id: string,
     serviceId: string,
     windowId: string,
     queueNumber: string,
-    date: Date,
-    time: Date
+    date: string,
+    time: string
 }

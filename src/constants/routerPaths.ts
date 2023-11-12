@@ -1,9 +1,11 @@
 export const ROUTER_PATHS = {
     TERMNINAL: '/',
     WINDOWS: '/windows',
-    EMPLOYE: '/employe',
     CATEGORIES: '/categories',
     SERVICES: '/categories/:categoryId(\\d+)/services',
+    
+    EMPLOYE: '/employe',
+    EMPLOYE_WORKSPACE: '/employe/workspace/:windowId(\\d+)',
     
     ADMINISTRATOR: '/administrator',
     ADMINISTRATOR_CATEGORIES: '/administrator/categories',

@@ -4,8 +4,12 @@ import { computed, ref, onMounted } from 'vue'
 
 const today = ref<Date>(new Date())
 
-const localeDate = computed(() =>
-    `${today.value.getHours().toLocaleString()}:${today.value.getMinutes().toLocaleString()}:${today.value.getSeconds().toLocaleString()}`
+const localeDate = computed(() => {
+    let hours = today.value.getHours().toLocaleString().padStart(2, '0')
+    let minutes = today.value.getMinutes().toLocaleString().padStart(2, '0')
+    let seconds = today.value.getSeconds().toLocaleString().padStart(2, '0')
+    return `${hours}:${minutes}:${seconds}`
+}
 )
 
 onMounted(() => {
