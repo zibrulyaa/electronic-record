@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, onUpdated, ref } from 'vue';
 import axios from 'axios';
 
 import type { Window } from '@/types';
@@ -59,12 +59,6 @@ function EnterWindow(windowId: string, isBusy: boolean) {
     router.push(`/employe/workspace/${windowId}`)
 }
 
-const intervalTime = 5000
-onMounted(() => {
-    setInterval(() => {
-        getWindowsPerPage()
-    }, intervalTime)
-})
 
 
 </script>

@@ -1,22 +1,71 @@
 <script setup lang='ts'>
-import { onMounted, onUpdated, ref } from 'vue'
+import { computed, onMounted, onUpdated, ref } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
+import axios from 'axios'
 
 import { useClients } from '@/composables/useClients'
 import { useWindows } from '@/composables/useWindows'
 
+import { WINDOWS_URL } from '@/constants'
+import type { Client } from '@/types'
+
 import CurrentTime from '../CurrentTime.vue'
 import ClientCard from './ClientCard.vue'
-import axios from 'axios'
-import { WINDOWS_URL } from '@/constants'
+import NotificationAlert from './NotificationAlert.vue'
+import NotificationConfirm from './NotificationConfirm.vue'
 
 const props = defineProps<{
     windowId: string
 }>()
 
-const { client, getCurrentClientAtWindow } = useClients(props.windowId)
+const { clients } = useClients(props.windowId)
 const { window, GetWindowById } = useWindows()
 
+const client = ref<Client | null>(null)
+
+function GetCurrentClient() {
+    if (!clients.value?.length) return false
+
+    client.value = clients.value?.shift() as Client
+    return true
+}
+
 GetWindowById(props.windowId)
+
+const notification_message = ref<string>("")
+
+const isAlertOpened = ref<boolean>(false)
+const isConfirmOpened = ref<boolean>(false)
+const confirmAnswer = ref<boolean>(false)
+
+const closeAlert = () => {
+    isAlertOpened.value = false
+}
+const closeConfirm = () => {
+    notification_message.value = "Действие отменено"
+    confirmAnswer.value = false
+    isConfirmOpened.value = false
+    isAlertOpened.value = true
+}
+const applyChanges = () => {
+    confirmAnswer.value = true
+    if (status.value === Status.HasClients)
+        DenyClient()
+    if (status.value === Status.Work)
+        CompleteService()
+}
+const openConfirm = () => {
+    if (status.value === Status.HasClients)
+        notification_message.value = "Пропустить клиента?"
+
+    if (status.value === Status.Work) {
+        const totalTimeInMinutes = Math.floor(serviceTime.value / 60)
+        const totalTimeInSeconds = serviceTime.value - totalTimeInMinutes * 60
+        notification_message.value = `На обслуживание ушло ${totalTimeInMinutes} минут и ${totalTimeInSeconds} секунд. Завершить?`
+    }
+
+    isConfirmOpened.value = true
+}
 
 enum Status {
     Waiting,
@@ -31,22 +80,19 @@ const config = {
 }
 
 async function DenyClient() {
-    if (confirm("Пропустить?"))
-        await axios.delete(`${WINDOWS_URL}/${window?.value?.id}/clients/${client.value?.id}`, config)
-            .then(() => {
-                client.value = null
-                Update()
-            })
-            .catch(error => console.log(error))
-    else alert("Действие отменено")
+    await axios.delete(`${WINDOWS_URL}/${window?.value?.id}/clients/${client.value?.id}`, config)
+        .then(() => {
+            client.value = null
+            isConfirmOpened.value = false
+            Update()
+        })
+        .catch(error => console.log(error))
 }
 
 async function AcceptClient() {
-
     const data = {
         isBusy: true
     }
-
     await axios.put(`${WINDOWS_URL}/${window?.value?.id}`, data, config)
         .then(() => status.value = Status.Work)
 }
@@ -54,24 +100,20 @@ async function AcceptClient() {
 const serviceTime = ref<number>(0)
 
 async function CompleteService() {
-    const totalTimeInMinutes = Math.floor(serviceTime.value / 60)
-    const totalTimeInSeconds = serviceTime.value - totalTimeInMinutes * 60
-    alert(`На обслуживание ушло ${totalTimeInMinutes} минут и ${totalTimeInSeconds} секунд`)
-
-    if (confirm("Завершить?")) {
-        const data = {
-            isBusy: false
-        }
-        await axios.put(`${WINDOWS_URL}/${window?.value?.id}`, data, config)
-            .then(() => status.value = Status.Waiting)
-        await axios.delete(`${WINDOWS_URL}/${window?.value?.id}/clients/${client.value?.id}`)
-            .then(() => {
-                client.value = null
-                Update()
-            })
-            .catch(error => console.log(error))
+    const data = {
+        isBusy: false
     }
-    else alert("Действие отменено")
+    await axios.put(`${WINDOWS_URL}/${window?.value?.id}`, data, config)
+        .then(() => status.value = Status.Waiting)
+    await axios.delete(`${WINDOWS_URL}/${window?.value?.id}/clients/${client.value?.id}`, config)
+        .then(() => {
+            client.value = null
+            serviceTime.value = 0
+            isConfirmOpened.value = false
+            Update()
+        })
+        .catch(error => console.log(error))
+
 }
 
 // Расчет времени обслуживания клиента в секундах
@@ -79,18 +121,18 @@ onUpdated(() => {
     if (status.value === Status.Work)
         setInterval(() => {
             serviceTime.value += 1
-            console.log('Расчет времени обслуживания клиента в секундах')
         }, 1000)
 })
 
 
-// Проверка на наличие новых клиентов через интервал времени
+// Проверка на наличие новых клиентов через интервал времени (5 сек)
 const isRefreshed = ref<boolean>(false)
 const intervalTime = 5000
 
 onMounted(() => {
     setInterval(() => {
-        Update()
+        if (!client.value && status.value === Status.Waiting)
+            Update()
     }, intervalTime)
 })
 
@@ -98,74 +140,72 @@ onMounted(() => {
 function Update() {
     isRefreshed.value = false
 
-    if (!client.value) {
-        getCurrentClientAtWindow()
-        status.value = Status.HasClients
+    if (client.value === null) {
+        let hasClient = GetCurrentClient()
         isRefreshed.value = true
-        console.log('Update')
+        console.log(`Update in window ${props.windowId}`)
+        if (hasClient)
+            status.value = Status.HasClients
     }
+
 }
 
+onBeforeRouteLeave(() => {
+    if (status.value === Status.Work) {
+        notification_message.value = "Вы не можете никуда перейти, т.к. у вас клиент"
+        isAlertOpened.value = true
+        return false
+    }
+})
 </script>
 
 <template>
     <div class="employe__workspace">
+        <NotificationAlert :message="notification_message"
+                           :is-active="isAlertOpened"
+                           @close-alert="closeAlert" />
+        <NotificationConfirm :message="notification_message"
+                             :is-active="isConfirmOpened"
+                             @close-confirm="closeConfirm"
+                             @accept="applyChanges" />
         <header class="employe__header">
             <h1 class="title">{{ window?.name }}</h1>
-            <div
-                class="status"
-                v-show="isRefreshed"
-            >Обновлено
+            <div class="status"
+                 v-show="isRefreshed && status === Status.Waiting">Обновлено
             </div>
             <CurrentTime />
         </header>
         <div class="employe__content">
             <ClientCard :client="client" />
-            <div
-                class="employe__actions"
-                v-if="status === Status.Waiting"
-            >
+            <div class="employe__actions"
+                 v-if="status === Status.Waiting">
                 <button class="btn-reset employe__btn employe__btn-relax">Выйти на перерыв</button>
                 <button class="btn-reset employe__btn employe__btn-relax">Закончить смену</button>
             </div>
-            <div
-                class="employe__actions"
-                v-else-if="status === Status.HasClients"
-            >
-                <button
-                    class="btn-reset employe__btn employe__btn-accept"
-                    @click.left="AcceptClient"
-                >
+            <div class="employe__actions"
+                 v-else-if="status === Status.HasClients">
+                <button class="btn-reset employe__btn employe__btn-accept"
+                        @click.left="AcceptClient">
                     Принять клиента
                 </button>
-                <button
-                    class="btn-reset employe__btn employe__btn-skip"
-                    @click.left="DenyClient"
-                >
+                <button class="btn-reset employe__btn employe__btn-skip"
+                        @click.left="openConfirm">
                     Клиент не пришел
                 </button>
                 <button class="btn-reset employe__btn employe__btn-relax">Выйти на перерыв</button>
             </div>
-            <div
-                class="employe__actions"
-                v-else-if="status === Status.Work"
-            >
-                <button
-                    class="btn-reset employe__btn employe__btn-accept"
-                    @click.left="CompleteService"
-                >
+            <div class="employe__actions"
+                 v-else-if="status === Status.Work">
+                <button class="btn-reset employe__btn employe__btn-accept"
+                        @click.left="openConfirm">
                     Завершить обслуживание
                 </button>
-                <button
-                    class="btn-reset employe__btn employe__btn-skip"
-                    @click.left="DenyClient"
-                >
+                <button class="btn-reset employe__btn employe__btn-skip"
+                        @click.left="DenyClient">
                     Перенаправить в другое окно
                 </button>
-                <button
-                    class="btn-reset employe__btn employe__btn-relax"
-                    disabled
-                >Выйти на перерыв</button>
+                <button class="btn-reset employe__btn employe__btn-relax"
+                        disabled>Выйти на перерыв</button>
             </div>
         </div>
     </div>
