@@ -1,5 +1,8 @@
 <script setup lang='ts'>
-import { computed, onMounted, onUpdated, ref } from 'vue'
+
+//#region Импорты
+
+import { onMounted, ref } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import axios from 'axios'
 
@@ -13,6 +16,9 @@ import CurrentTime from '../CurrentTime.vue'
 import ClientCard from './ClientCard.vue'
 import NotificationAlert from './NotificationAlert.vue'
 import NotificationConfirm from './NotificationConfirm.vue'
+import StopWatch from './StopWatch.vue'
+
+//#endregion
 
 const props = defineProps<{
     windowId: string
@@ -20,23 +26,29 @@ const props = defineProps<{
 
 const { clients } = useClients(props.windowId)
 const { window, GetWindowById } = useWindows()
-
 const client = ref<Client | null>(null)
 
-function GetCurrentClient() {
-    if (!clients.value?.length) return false
+enum Status {
+    Waiting,
+    HasClients,
+    Work
+}
 
-    client.value = clients.value?.shift() as Client
-    return true
+const status = ref<Status>(Status.Waiting)
+
+const config = {
+    headers: { 'content-type': 'application/json' },
 }
 
 GetWindowById(props.windowId)
 
-const notification_message = ref<string>("")
+//#region Работа с попапами
 
 const isAlertOpened = ref<boolean>(false)
 const isConfirmOpened = ref<boolean>(false)
 const confirmAnswer = ref<boolean>(false)
+
+const notification_message = ref<string>("")
 
 const closeAlert = () => {
     isAlertOpened.value = false
@@ -59,24 +71,23 @@ const openConfirm = () => {
         notification_message.value = "Пропустить клиента?"
 
     if (status.value === Status.Work) {
-        const totalTimeInMinutes = Math.floor(serviceTime.value / 60)
-        const totalTimeInSeconds = serviceTime.value - totalTimeInMinutes * 60
-        notification_message.value = `На обслуживание ушло ${totalTimeInMinutes} минут и ${totalTimeInSeconds} секунд. Завершить?`
+        notification_message.value = "Вы уверены что хотите завершить?"
     }
+
 
     isConfirmOpened.value = true
 }
+//#endregion
 
-enum Status {
-    Waiting,
-    HasClients,
-    Work
-}
+//#region Работа с клиентами
 
-const status = ref<Status>(Status.Waiting)
+const StopWatchRef = ref()
 
-const config = {
-    headers: { 'content-type': 'application/json' },
+function GetCurrentClient() {
+    if (!clients.value?.length) return false
+
+    client.value = clients.value?.shift() as Client
+    return true
 }
 
 async function DenyClient() {
@@ -95,20 +106,26 @@ async function AcceptClient() {
     }
     await axios.put(`${WINDOWS_URL}/${window?.value?.id}`, data, config)
         .then(() => status.value = Status.Work)
+    StopWatchRef.value.start()
 }
 
-const serviceTime = ref<number>(0)
 
 async function CompleteService() {
+    StopWatchRef.value.stop()
+
+    // Меняем статус окна
     const data = {
         isBusy: false
     }
     await axios.put(`${WINDOWS_URL}/${window?.value?.id}`, data, config)
         .then(() => status.value = Status.Waiting)
+
+    // Отправляем клиента в завершенные обслуживания
+
+    // Убираем клиента из очереди
     await axios.delete(`${WINDOWS_URL}/${window?.value?.id}/clients/${client.value?.id}`, config)
         .then(() => {
             client.value = null
-            serviceTime.value = 0
             isConfirmOpened.value = false
             Update()
         })
@@ -116,14 +133,9 @@ async function CompleteService() {
 
 }
 
-// Расчет времени обслуживания клиента в секундах
-onUpdated(() => {
-    if (status.value === Status.Work)
-        setInterval(() => {
-            serviceTime.value += 1
-        }, 1000)
-})
+//#endregion
 
+//#region Работа с поиском нового клиента
 
 // Проверка на наличие новых клиентов через интервал времени (5 сек)
 const isRefreshed = ref<boolean>(false)
@@ -150,6 +162,9 @@ function Update() {
 
 }
 
+//#endregion
+
+// Запрет на переходы по страницам
 onBeforeRouteLeave(() => {
     if (status.value === Status.Work) {
         notification_message.value = "Вы не можете никуда перейти, т.к. у вас клиент"
@@ -157,55 +172,82 @@ onBeforeRouteLeave(() => {
         return false
     }
 })
+
 </script>
 
 <template>
     <div class="employe__workspace">
-        <NotificationAlert :message="notification_message"
-                           :is-active="isAlertOpened"
-                           @close-alert="closeAlert" />
-        <NotificationConfirm :message="notification_message"
-                             :is-active="isConfirmOpened"
-                             @close-confirm="closeConfirm"
-                             @accept="applyChanges" />
+        <NotificationAlert
+            :message="notification_message"
+            :is-active="isAlertOpened"
+            @close-alert="closeAlert"
+        />
+        <NotificationConfirm
+            :message="notification_message"
+            :is-active="isConfirmOpened"
+            @close-confirm="closeConfirm"
+            @accept="applyChanges"
+        />
         <header class="employe__header">
             <h1 class="title">{{ window?.name }}</h1>
-            <div class="status"
-                 v-show="isRefreshed && status === Status.Waiting">Обновлено
+            <div
+                class="status"
+                v-show="isRefreshed && status === Status.Waiting"
+            >
+                Обновлено
             </div>
+            <StopWatch
+                ref="StopWatchRef"
+                v-show="status === Status.Work"
+            />
             <CurrentTime />
         </header>
         <div class="employe__content">
             <ClientCard :client="client" />
-            <div class="employe__actions"
-                 v-if="status === Status.Waiting">
+            <div
+                class="employe__actions"
+                v-if="status === Status.Waiting"
+            >
                 <button class="btn-reset employe__btn employe__btn-relax">Выйти на перерыв</button>
                 <button class="btn-reset employe__btn employe__btn-relax">Закончить смену</button>
             </div>
-            <div class="employe__actions"
-                 v-else-if="status === Status.HasClients">
-                <button class="btn-reset employe__btn employe__btn-accept"
-                        @click.left="AcceptClient">
+            <div
+                class="employe__actions"
+                v-else-if="status === Status.HasClients"
+            >
+                <button
+                    class="btn-reset employe__btn employe__btn-accept"
+                    @click.left="AcceptClient"
+                >
                     Принять клиента
                 </button>
-                <button class="btn-reset employe__btn employe__btn-skip"
-                        @click.left="openConfirm">
+                <button
+                    class="btn-reset employe__btn employe__btn-skip"
+                    @click.left="openConfirm"
+                >
                     Клиент не пришел
                 </button>
                 <button class="btn-reset employe__btn employe__btn-relax">Выйти на перерыв</button>
             </div>
-            <div class="employe__actions"
-                 v-else-if="status === Status.Work">
-                <button class="btn-reset employe__btn employe__btn-accept"
-                        @click.left="openConfirm">
+            <div
+                class="employe__actions"
+                v-else-if="status === Status.Work"
+            >
+                <button
+                    class="btn-reset employe__btn employe__btn-accept"
+                    @click.left="openConfirm"
+                >
                     Завершить обслуживание
                 </button>
-                <button class="btn-reset employe__btn employe__btn-skip"
-                        @click.left="DenyClient">
+                <button
+                    class="btn-reset employe__btn employe__btn-skip"
+                >
                     Перенаправить в другое окно
                 </button>
-                <button class="btn-reset employe__btn employe__btn-relax"
-                        disabled>Выйти на перерыв</button>
+                <button
+                    class="btn-reset employe__btn employe__btn-relax"
+                    disabled
+                >Выйти на перерыв</button>
             </div>
         </div>
     </div>
