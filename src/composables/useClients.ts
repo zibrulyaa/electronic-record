@@ -7,7 +7,6 @@ import { WINDOWS_URL } from '@/constants'
 
 export const useClients = (windowId: string) => {
     const clients = ref<Client[]>()
-    // const client = ref<Client>()
 
     const getClientsByWindowId = async () => {
         try {
@@ -18,10 +17,6 @@ export const useClients = (windowId: string) => {
             console.log(error)
         }
     }
-    // const getCurrentClient = async () => {
-    //     const response = await axios.get(`${WINDOWS_URL}/${windowId}/clients`)
-    //     client.value = response?
-    // }
 
     onMounted(() => getClientsByWindowId())
 

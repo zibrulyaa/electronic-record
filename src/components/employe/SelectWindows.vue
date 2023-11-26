@@ -42,8 +42,6 @@ function updateFilters() {
 
 getWindowsPerPage()
 
-
-
 function changePage(page: number) {
     currentPage.value = page
     updateFilters()
@@ -77,7 +75,7 @@ function EnterWindow(windowId: string, isBusy: boolean) {
                 @click.left="EnterWindow(window.id, window.isBusy)"
             />
         </div>
-        <ul class="pagination">
+        <ul class="pagination" v-if="pages > 1">
             <li
                 class="pagination-bullet"
                 :class="{ active: page === currentPage }"

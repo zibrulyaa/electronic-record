@@ -1,6 +1,9 @@
 <script setup lang='ts'>
+//#region Импорты
+
 import 'swiper/css'
 import 'swiper/css/pagination'
+
 
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Pagination, Autoplay } from 'swiper/modules'
@@ -9,7 +12,9 @@ import { useWindows } from '@/composables/useWindows'
 
 import WindowColumn from './WindowColumn.vue'
 
-const { windows } = useWindows()
+//#endregion
+
+//#region Слайдер
 
 const modules = [Pagination, Autoplay]
 
@@ -23,9 +28,11 @@ const autoplay = {
     delay: 10000,
 }
 
+//#endregion
+
+const { windows } = useWindows()
+
 </script>
-
-
 
 <template>
     <swiper

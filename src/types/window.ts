@@ -1,5 +1,5 @@
 export type Window = {
-    id: string,
+    id?: string,
     name: string, 
     isBusy: boolean
 }

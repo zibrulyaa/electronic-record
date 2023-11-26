@@ -14,4 +14,6 @@ export const ROUTER_PATHS = {
     ADMINISTRATOR_SERVICES: '/administrator/categories/:categoryId(\\d+)/services/',
     ADMINISTRATOR_SERVICE: '/administrator/categories/:categoryId(\\d+)/services/:serviceId(\\d+)',
     ADMINISTRATOR_SERVICE_EDIT: '/administrator/categories/:categoryId(\\d+)/services/:serviceId(\\d+)/edit',
+    ADMINISTRATOR_WINDOWS: '/administrator/windows',
+    ADMINISTRATOR_WINDOW_EDIT: '/administrator/windows/:windowId(\\d+)/edit',
 }

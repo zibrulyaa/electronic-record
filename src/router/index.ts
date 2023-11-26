@@ -12,6 +12,8 @@ import AdministratorPage from '@/pages/administrator/AdministratorPage.vue'
 import AdministratorCategoriesPage from '@/pages/administrator/AdministratorCategoriesPage.vue'
 import AdministratorCategoryPage from '@/pages/administrator/AdministratorCategoryPage.vue'
 import AdministratorServicePage from '@/pages/administrator/AdministratorServicePage.vue'
+import AdministratorWindowsPage from '@/pages/administrator/AdministratorWindowsPage.vue'
+import AdministratorWindowPage from '@/pages/administrator/AdministratorWindowPage.vue'
 
 import { ROUTER_PATHS } from '@/constants'
 
@@ -68,6 +70,16 @@ const router = createRouter({
       path: ROUTER_PATHS.ADMINISTRATOR_SERVICE_EDIT,
       name: ROUTER_PATHS.ADMINISTRATOR_SERVICE_EDIT,
       component: AdministratorServicePage,
+    },
+    {
+      path: ROUTER_PATHS.ADMINISTRATOR_WINDOWS,
+      name: ROUTER_PATHS.ADMINISTRATOR_WINDOWS,
+      component: AdministratorWindowsPage
+    },
+    {
+      path: ROUTER_PATHS.ADMINISTRATOR_WINDOW_EDIT,
+      name: ROUTER_PATHS.ADMINISTRATOR_WINDOW_EDIT,
+      component: AdministratorWindowPage
     }
   ]
 })

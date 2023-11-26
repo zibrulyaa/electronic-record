@@ -9,7 +9,7 @@ import { ref } from 'vue'
 import type { Category } from '@/types/'
 import { useCategories } from '@/composables/useCategories'
 
-const { categories } = useCategories()
+const { categories, errorObj } = useCategories()
 
 const selectedCaterory = ref<Category>()
 
@@ -22,8 +22,10 @@ const chooseCategory = (choosenCategory: Category) => {
     <AppLayout>
         <div class="wrapper">
             <!-- Не найдены категории -->
-            <div class="content"
-                 v-if="categories?.length === 0">
+            <div
+                class="content"
+                v-if="categories?.length === 0 || errorObj?.response?.status === 404"
+            >
                 <header class="header">
                     <BackButton />
                     <div class="title">Все категории</div>
@@ -31,14 +33,18 @@ const chooseCategory = (choosenCategory: Category) => {
                 <div class="empty">Категории не были найдены 🙁</div>
             </div>
             <!-- Найдены категории -->
-            <div class="content"
-                 v-else-if="categories">
+            <div
+                class="content"
+                v-else-if="categories"
+            >
                 <header class="header">
                     <BackButton />
                     <div class="title">Выберите категорию</div>
                 </header>
-                <CategoryCard :categories="categories"
-                              @choose-category="chooseCategory" />
+                <CategoryCard
+                    :categories="categories"
+                    @choose-category="chooseCategory"
+                />
             </div>
             <!-- Скелетоны -->
             <SkeletonCard v-else />

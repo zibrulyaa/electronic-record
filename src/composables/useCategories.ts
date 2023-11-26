@@ -1,5 +1,5 @@
 import { ref, onMounted } from "vue"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 
 import type { Category } from '@/types';
 import { CATEGORIES_URL } from '@/constants';
@@ -8,6 +8,7 @@ import { CATEGORIES_URL } from '@/constants';
 export const useCategories = () => {
     const categories = ref<Category[]>()
     const categoriesCount = ref<number>()
+    const errorObj = ref<AxiosError>()
 
     const getCategories = async () => {
         try {
@@ -16,7 +17,12 @@ export const useCategories = () => {
             categoriesCount.value = categories.value?.length
         }
         catch (error) {
-            console.log(error)
+            if (axios.isAxiosError(error)) {
+                errorObj.value = error
+            }
+            else {
+                console.log("Стандартная ошибка: " + error)
+            }
         }
     }
 
@@ -25,6 +31,7 @@ export const useCategories = () => {
     return {
         categories,
         categoriesCount,
-        getCategories
+        getCategories,
+        errorObj
     }
 }

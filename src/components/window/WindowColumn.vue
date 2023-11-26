@@ -111,4 +111,4 @@ const clientPosition = (rowIndex: number) => {
     }
 
 }
-</style>@/composables/useClients
+</style>

@@ -28,7 +28,7 @@ const { windowsCount } = useWindows()
             </RouterLink>
             <RouterLink
                 class="card-setting"
-                :to="''"
+                :to="ROUTER_PATHS.ADMINISTRATOR_WINDOWS"
             >
                 <h3 class="card-setting__title">Окна</h3>
                 <div class="card-setting__inner">

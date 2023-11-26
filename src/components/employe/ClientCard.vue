@@ -1,9 +1,42 @@
 <script setup lang='ts'>
 import type { Client } from '@/types'
+import { computed } from 'vue';
 
-defineProps<{
-    client: Client | null
-}>()
+const props = withDefaults(
+    defineProps<{
+        client?: Client | null
+    }>(),
+    {
+        client: null
+    })
+
+const time = computed(() => getTime())
+const date = computed(() => getDate())
+
+function getLocaleDate() {
+    return new Date(Number(props.client?.date) * 1000)
+}
+
+function getTime() {
+    let localeDate = getLocaleDate()
+
+    let hours = localeDate.getHours()
+    let minutes = localeDate.getMinutes()
+    let seconds = localeDate.getSeconds()
+
+    return `${hours}:${minutes}:${seconds}`
+}
+
+function getDate() {
+    let localeDate = getLocaleDate()
+
+    let day = localeDate.getDate()
+    let month = localeDate.getMonth()
+    let year = localeDate.getFullYear()
+
+    return `${day}.${month}.${year}`
+}
+
 </script>
 
 <template>
@@ -17,8 +50,8 @@ defineProps<{
             <span class="client__number">{{ client.queueNumber }}</span>
         </div>
         <div class="client__datetime">
-            <div class="client__time">{{ client.time }}</div>
-            <div class="client__date">{{ client.date }}</div>
+            <div class="client__time">{{ time }}</div>
+            <div class="client__date">{{ date }}</div>
         </div>
     </div>
     <div
