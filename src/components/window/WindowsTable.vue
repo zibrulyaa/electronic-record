@@ -4,6 +4,7 @@
 import 'swiper/css'
 import 'swiper/css/pagination'
 
+import { onMounted } from 'vue'
 
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Pagination, Autoplay } from 'swiper/modules'
@@ -30,7 +31,13 @@ const autoplay = {
 
 //#endregion
 
-const { windows } = useWindows()
+const { windows, getWindows } = useWindows()
+
+onMounted(async () => {
+    getWindows()
+});
+
+
 
 </script>
 

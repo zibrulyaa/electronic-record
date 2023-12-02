@@ -6,7 +6,7 @@ import { CATEGORIES_URL } from '@/constants';
 
 
 export const useServices = (categoryId: string) => {
-    const services = ref<Service[]>()
+    const services = ref<Service[]>([])
 
     const getServices = async () => {
         try {

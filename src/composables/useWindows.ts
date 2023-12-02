@@ -6,9 +6,9 @@ import { WINDOWS_URL } from '@/constants'
 
 
 export const useWindows = () => {
-    const windows = ref<Window[]>()
+    const windows = ref<Window[]>([])
     const window = ref<Window>()
-    const windowsCount = ref<number>()
+    const windowsCount = ref<number>(0)
 
 
     const getWindows = async () => {
@@ -26,6 +26,7 @@ export const useWindows = () => {
         try {
             const responce = await axios.get(`${WINDOWS_URL}/${windowId}`)
             window.value = responce?.data
+            return window
         }
         catch (error) {
             console.log(error)

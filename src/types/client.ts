@@ -1,7 +1,7 @@
 export type Client = {
-    id: string,
+    id?: string,
     serviceId: string,
     windowId: string,
     queueNumber: number,
-    date: Date,
+    date: number,
 }

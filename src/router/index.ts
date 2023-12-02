@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import TerminalPage from '@/pages/terminal/TerminalPage.vue'
 import TerminalCategoryPage from '@/pages/terminal/TerminalCategoryPage.vue'
 import TeminalServicePage from '@/pages/terminal/TeminalServicePage.vue'
+import TerminalTicketPage from '@/pages/terminal/TerminalTicketPage.vue'
 
 import WindowsPage from '@/pages/window/WindowsPage.vue'
 
@@ -24,6 +25,11 @@ const router = createRouter({
       path: ROUTER_PATHS.TERMNINAL,
       name: ROUTER_PATHS.TERMNINAL,
       component: TerminalPage
+    },
+    {
+      path: ROUTER_PATHS.TERMINAL_TICKET,
+      name: ROUTER_PATHS.TERMINAL_TICKET,
+      component: TerminalTicketPage
     },
     {
       path: ROUTER_PATHS.CATEGORIES,

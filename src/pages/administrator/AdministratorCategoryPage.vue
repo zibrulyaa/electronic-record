@@ -61,7 +61,7 @@ async function addService(name: string, description: string, windows: Window[], 
     }
 
     for (const window of windows) {
-        data.windows.push(window)
+        data.windows.push(window.id)
     }
 
     console.log(data)

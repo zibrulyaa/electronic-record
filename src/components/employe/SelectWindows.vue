@@ -1,63 +1,72 @@
 <script setup lang='ts'>
-import { computed, onMounted, onUpdated, ref } from 'vue';
+
+//#region Импорты
+
+import { computed, onMounted, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 
 import type { Window } from '@/types';
 import { useWindows } from '@/composables/useWindows'
-import { WINDOWS_URL } from '@/constants';
+import { ROUTER_PATHS, WINDOWS_URL } from '@/constants';
 
 import WindowCard from './WindowCard.vue';
-import { useRouter } from 'vue-router';
+import NotificationAlert from './NotificationAlert.vue';
+//#endregion
 
 const router = useRouter()
+const route = useRoute()
 
 const { windowsCount } = useWindows()
 const windowsPerPage = ref<Window[]>()
 
 const itemsPerPage = 9
 
-const currentPage = ref<number>(1)
+const currentPage = computed((): number => Number(route.params.page))
 
 const pages = computed((): number => {
     if (!windowsCount.value) return 0
     return Math.ceil(windowsCount.value / itemsPerPage)
 })
 
-
 const getWindowsPerPage = async () => {
-    updateFilters()
     const response = await axios.get(`${WINDOWS_URL}?page=${currentPage.value}&limit=${itemsPerPage}`)
     windowsPerPage.value = response?.data
 }
 
-function updateFilters() {
-    router.push({
-        name: '/employe',
-        query:
-        {
-            page: currentPage.value
-        }
-    })
-}
-
-getWindowsPerPage()
+onMounted(() => {
+    getWindowsPerPage()
+})
 
 function changePage(page: number) {
-    currentPage.value = page
-    updateFilters()
-    getWindowsPerPage()
+    router.push({ name: ROUTER_PATHS.EMPLOYE, params: { page: page } })
 }
+
+watch(currentPage, (page: number, oldPage: number) => {
+    if (oldPage != page) {
+        oldPage = page
+        getWindowsPerPage()
+    }
+})
+
+//#region Занятие окна
 
 function EnterWindow(windowId: string, isBusy: boolean) {
     if (isBusy) {
-        alert("Окно занято")
+        message.value = "Окно занято"
+        isNotificationActive.value = true
         return
     }
-
-    router.push(`/employe/workspace/${windowId}`)
+    router.push({ name: ROUTER_PATHS.EMPLOYE_WORKSPACE, params: { windowId: windowId } })
 }
 
+const message = ref<string>("")
+const isNotificationActive = ref<boolean>(false)
 
+function closeAlert() {
+    isNotificationActive.value = false
+}
+//#endregion
 
 </script>
 
@@ -66,6 +75,11 @@ function EnterWindow(windowId: string, isBusy: boolean) {
         class="content"
         v-if="windowsCount"
     >
+        <NotificationAlert
+            :is-active="isNotificationActive"
+            :message="message"
+            @close-alert="closeAlert"
+        />
         <h1 class="title">Выбрать окно</h1>
         <div class="windows__wrapper">
             <WindowCard
@@ -75,7 +89,10 @@ function EnterWindow(windowId: string, isBusy: boolean) {
                 @click.left="EnterWindow(window.id, window.isBusy)"
             />
         </div>
-        <ul class="pagination" v-if="pages > 1">
+        <ul
+            class="pagination"
+            v-if="pages > 1"
+        >
             <li
                 class="pagination-bullet"
                 :class="{ active: page === currentPage }"
@@ -87,7 +104,6 @@ function EnterWindow(windowId: string, isBusy: boolean) {
             </li>
         </ul>
     </div>
-
     <div
         class="empty"
         v-else
@@ -110,8 +126,6 @@ function EnterWindow(windowId: string, isBusy: boolean) {
     gap: 20px;
 
 }
-
-
 
 .pagination {
     display: flex;

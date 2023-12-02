@@ -7,7 +7,7 @@ import { CATEGORIES_URL } from '@/constants';
 
 export const useCategories = () => {
     const categories = ref<Category[]>()
-    const categoriesCount = ref<number>()
+    const categoriesCount = ref<number>(0)
     const errorObj = ref<AxiosError>()
 
     const getCategories = async () => {

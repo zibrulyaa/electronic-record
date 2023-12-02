@@ -2,7 +2,7 @@
 
 //#region Импорты
 
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import axios from 'axios'
 
@@ -141,11 +141,17 @@ async function CompleteService() {
 const isRefreshed = ref<boolean>(false)
 const intervalTime = 5000
 
+const updateInterval = ref()
+
 onMounted(() => {
-    setInterval(() => {
+    updateInterval.value = setInterval(() => {
         if (!client.value && status.value === Status.Waiting)
             Update()
     }, intervalTime)
+})
+
+onBeforeUnmount(() => {
+    clearInterval(updateInterval.value)
 })
 
 
@@ -172,6 +178,8 @@ onBeforeRouteLeave(() => {
         return false
     }
 })
+
+
 
 </script>
 
@@ -239,9 +247,7 @@ onBeforeRouteLeave(() => {
                 >
                     Завершить обслуживание
                 </button>
-                <button
-                    class="btn-reset employe__btn employe__btn-skip"
-                >
+                <button class="btn-reset employe__btn employe__btn-skip">
                     Перенаправить в другое окно
                 </button>
                 <button
