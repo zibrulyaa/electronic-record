@@ -1,6 +1,5 @@
 <script setup lang='ts'>
-import { RouterLink, useRoute } from 'vue-router'
-import { computed } from 'vue'
+import { RouterLink } from 'vue-router'
 
 import { ROUTER_PATHS } from '@/constants'
 
@@ -11,16 +10,13 @@ import EmployeIcon from '@/components/icons/EmployeIcon.vue'
 import AdministratorIcon from '@/components/icons/AdministratorIcon.vue'
 
 
-const route = useRoute()
-const routeName = computed(() => route.name)
-
 
 </script>
 
 <template>
     <aside class="aside__menu">
         <div class="logo">
-            <LogoIcon />
+            <LogoIcon class="menu__link-icon" />
             <div class="logo__title">Электронная запись</div>
         </div>
 
@@ -29,43 +25,37 @@ const routeName = computed(() => route.name)
                 <li class="menu__list-item">
                     <RouterLink
                         class="menu__list-link"
-                        :class="{ active: routeName === ('/' || '/category' || '/category/:rid/services') ? true : false }"
                         :to="ROUTER_PATHS.TERMNINAL"
                     >
-                        <TerminalIcon
-                            :is-active="routeName === ('/' || '/category' || '/category/:rid/services') ? true : false"
-                        />
-                        <span>Терминал</span>
+                        <TerminalIcon class="menu__link-icon" />
+                        <span class="menu__link-text">Терминал</span>
                     </RouterLink>
                 </li>
                 <li class="menu__list-item">
                     <RouterLink
                         class="menu__list-link"
-                        :class="{ active: routeName === '/windows' ? true : false }"
                         :to="ROUTER_PATHS.WINDOWS"
                     >
-                        <WindowsIcon :is-active="routeName === '/windows' ? true : false" />
-                        <span>Окно очереди</span>
+                        <WindowsIcon class="menu__link-icon" />
+                        <span class="menu__link-text">Очередь</span>
                     </RouterLink>
                 </li>
                 <li class="menu__list-item">
                     <RouterLink
                         class="menu__list-link"
-                        :class="{ active: routeName === '/employe' ? true : false }"
                         :to="{ name: ROUTER_PATHS.EMPLOYE, params: { page: '1' } }"
                     >
-                        <EmployeIcon :is-active="routeName === '/employe' ? true : false" />
-                        <span>Сотрудники</span>
+                        <EmployeIcon class="menu__link-icon" />
+                        <span class="menu__link-text">Сотрудники</span>
                     </RouterLink>
                 </li>
                 <li class="menu__list-item">
                     <RouterLink
                         class="menu__list-link"
-                        :class="{ active: routeName === '/administrator' ? true : false }"
                         :to="ROUTER_PATHS.ADMINISTRATOR"
                     >
-                        <AdministratorIcon :is-active="routeName === '/administrator' ? true : false" />
-                        <span>Администратор</span>
+                        <AdministratorIcon class="menu__link-icon" />
+                        <span class="menu__link-text">Администратор</span>
                     </RouterLink>
                 </li>
             </ul>
@@ -77,66 +67,119 @@ const routeName = computed(() => route.name)
 @import '@/assets/scss/vars';
 @import '@/assets/scss/mixins';
 
+
+
+.logo {
+    margin-bottom: 200px;
+    max-width: 168px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+
+    // .logo__title
+
+    &__title {
+        opacity: 0;
+        max-width: 128px;
+        width: 0;
+        font-size: 18px;
+        transition: all .3s ease-in-out;
+    }
+}
+
+
 .aside {
 
     // .aside__menu
 
     &__menu {
-        position: fixed;
-        height: 100vh;
-        left: 0;
-        padding: 40px 16px;
-        background-color: #fff;
+        position: absolute;
+        z-index: 10;
         border-right: 1px solid $disabled;
-        max-width: 200px;
-    }
-}
+        background-color: $white;
+        padding: 40px 16px;
+        height: 100vh;
+        width: 200px;
+        transition: all .3s ease-in-out;
+        transform: translateX(-144px);
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 200px;
-
-    // .logo__title
-
-    &__title {
-        font-size: 18px;
-        font-weight: 700;
-        line-height: 140%;
+        &:hover {
+            transform: translateX(0px);
+        }
     }
 }
 
 .menu {
 
+    &__list {
+        display: flex;
+        flex-direction: column;
+    }
+
     // .menu__list-item
 
     &__list-item {
+        border-radius: 4px;
+        transition: all .3s ease-in-out;
+        padding: 3px 8px;
+        padding-right: 0;
+        height: 32px;
+        border: 1px solid transparent;
+
         &:not(:last-child) {
             margin-bottom: 24px;
+        }
+
+        &:hover {
+            border: 1px solid $accent;
         }
     }
 
     // .menu__list-link
+
     &__list-link {
+        height: 24px;
         display: flex;
         align-items: center;
+        flex-direction: row-reverse;
+        justify-content: space-between;
         gap: 10px;
-        padding: 4px 16px 4px 8px;
-        border-radius: 4px;
+    }
+
+    &__link-text {
+        overflow-x: hidden;
         font-size: 14px;
-        font-weight: 400;
-        line-height: 140%;
-        color: $black;
-
-        &:hover {
-            background-color: $accent-hover;
-        }
-
-        &.active {
-            background-color: $accent;
-            color: $white;
-        }
+        transition: all .6s ease-in-out;
     }
 }
+
+.menu__link-icon {
+    max-width: 24px;
+    max-height: 24px;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+
+// Анимация меню
+
+.aside__menu:hover .menu__link-text {
+    overflow-x: visible;
+    font-size: 14px;
+}
+
+.aside__menu:hover .menu__list-item {
+    padding: 3px 8px;
+    width: 100%;
+}
+
+
+// Анимация логотипа
+.aside__menu:hover .logo__title {
+    opacity: 1;
+    font-size: 18px;
+    font-weight: 700;
+    margin-left: 10px;
+}
+
 </style>
