@@ -93,7 +93,7 @@ import AdministratorIcon from '@/components/icons/AdministratorIcon.vue'
     // .aside__menu
 
     &__menu {
-        position: absolute;
+        position: fixed;
         z-index: 10;
         border-right: 1px solid $disabled;
         background-color: $white;
@@ -118,32 +118,27 @@ import AdministratorIcon from '@/components/icons/AdministratorIcon.vue'
 
     // .menu__list-item
 
-    &__list-item {
-        border-radius: 4px;
-        transition: all .3s ease-in-out;
-        padding: 3px 8px;
-        padding-right: 0;
-        height: 32px;
-        border: 1px solid transparent;
-
-        &:not(:last-child) {
-            margin-bottom: 24px;
-        }
-
-        &:hover {
-            border: 1px solid $accent;
-        }
+    &__list-item:not(:last-child) {
+        margin-bottom: 24px;
     }
 
     // .menu__list-link
 
     &__list-link {
-        height: 24px;
         display: flex;
         align-items: center;
         flex-direction: row-reverse;
         justify-content: space-between;
-        gap: 10px;
+        height: 32px;
+        border-radius: 4px;
+        padding: 3px 8px;
+        padding-right: 0;
+        border: 1px solid transparent;
+        transition: all .3s ease-in-out;
+
+        &:hover {
+            border: 1px solid $accent;
+        }
     }
 
     &__link-text {
@@ -168,7 +163,7 @@ import AdministratorIcon from '@/components/icons/AdministratorIcon.vue'
     font-size: 14px;
 }
 
-.aside__menu:hover .menu__list-item {
+.aside__menu:hover .menu__list-link {
     padding: 3px 8px;
     width: 100%;
 }
@@ -181,5 +176,4 @@ import AdministratorIcon from '@/components/icons/AdministratorIcon.vue'
     font-weight: 700;
     margin-left: 10px;
 }
-
 </style>
