@@ -37,7 +37,7 @@ import AdministratorIcon from '@/components/icons/AdministratorIcon.vue'
                         :to="ROUTER_PATHS.WINDOWS"
                     >
                         <WindowsIcon class="menu__link-icon" />
-                        <span class="menu__link-text">Очередь</span>
+                        <span class="menu__link-text">Окна очереди</span>
                     </RouterLink>
                 </li>
                 <li class="menu__list-item">
