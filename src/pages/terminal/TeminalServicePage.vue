@@ -1,8 +1,11 @@
 <script setup lang='ts'>
+//#region Импорты
 import { ref, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
+import axios from 'axios';
 
-import type { Client, Service } from '@/types/'
+import type { Client, Service } from '@/types'
+import { WINDOWS_URL } from '@/constants';
 
 import { useServices } from '@/composables/useServices';
 import { useCategory } from '@/composables/useCategory';
@@ -11,11 +14,10 @@ import AppLayout from '@/components/AppLayout.vue';
 import ServiceCard from '@/components/terminal/ServiceCard.vue';
 import SkeletonCard from '@/components/skeletons/SkeletonCard.vue'
 import BackButton from '@/components/BackButton.vue';
-import { ROUTER_PATHS, WINDOWS_URL } from '@/constants';
-import axios from 'axios';
+
+//#endregion
 
 const route = useRoute()
-const router = useRouter()
 const categoryId = computed((): string => route.params.categoryId.toString());
 
 const { category } = useCategory(categoryId.value)
@@ -100,10 +102,6 @@ function getRandomWindow() {
         return availableWindowsToService[rand].toString()
     }
 
-}
-
-async function getFreeWindow(params:type) {
-    
 }
 
 function getQueueNumber() {

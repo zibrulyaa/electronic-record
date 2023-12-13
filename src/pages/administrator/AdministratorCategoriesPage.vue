@@ -1,4 +1,6 @@
 <script setup lang='ts'>
+
+//#region Импорты
 import { ref } from 'vue'
 import axios from 'axios'
 
@@ -12,11 +14,12 @@ import CategoryCard from '@/components/administrator/categories/CategoryCard.vue
 import CategoryForm from '@/components/administrator/categories/CategoryForm.vue'
 import BackButton from '@/components/BackButton.vue'
 
+//#endregion
 
 const { categories, getCategories } = useCategories()
 
+//#region Работа с формами
 
-//#region FormActions
 const isFormShown = ref<boolean>(false)
 
 function openForm() {
@@ -105,4 +108,5 @@ async function addCatagory(name: string, description: string) {
         color: $white;
     }
 }
+
 </style>
